@@ -10,7 +10,7 @@ siguiendo la siguiente regla de choque.
 <img src='eqs/rebote.png' alt='rebote inelastico' height='40'>
 
 > Latex:
-    v\_p'(t^\*) = (1+\eta)v\_s(t^\*) - \eta v\_p(t^\*)
+    `v_p'(t^*) = (1+\eta)v_s(t^*) - \eta v_p(t^*)`
 
 donde t<sup>\*</sup> es el instante del bote, v<sub>p</sub> y
 v<sub>p</sub><sup>'</sup> son las velocidades justo antes y justo
@@ -69,4 +69,17 @@ solo queda por elegir _v_(0), &eta; y &omega;.
 
    > Al final de un ciclo con un valor de &omega;, conviene usar el estado
    > final para el estado inicial del &omega; siguiente.
+
+__Otras Notas.__
+
+- Utilice `git` durante el desarrollo de la tarea para mantener un historial de
+  los cambios realizados. La siguiente [*cheat
+  sheet*](https://education.github.com/git-cheat-sheet-education.pdf) le puede
+  ser útil.
+
+- La tarea se entrega como un *pull request* en github. El *pull request* debe
+  incluir todos los códigos usados además de su informe.
+
+- El informe debe ser entregado en formato *pdf*, este debe ser claro sin
+  información ni de más ni de menos.
 
