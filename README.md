@@ -1,4 +1,4 @@
-# Tarea nro. 1
+# Tarea nro. 2
 ## FI3104B - Metodos Numericos Para la Ciencia y la Ingenieria
 #### Prof. Valentino González
 
