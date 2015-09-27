@@ -22,6 +22,17 @@ def encontrar_cero(f,a,b,err=0.01,itera=40):
         i += 1
     return p
 
+def busca_bajo_piso(f,dx,a=0.01,max_=10000):
+    '''recorre la funcion con un paso dado hasta encontrar un punto donde sea negativa'''
+     u=a
+     i=0
+    while (f(u) > 0) and (i < max_) :
+        u+=dx
+        i+=1
+    if(i >= max_):
+        print("No se encontró punto negativo")
+    return (u,u-dx)
+
 def avanzar_salto(yn,vn_prima):
     '''Funcion que recibe la posicion del choque n-esimo (yn),
     y la velcidad justo despues del choque n-esimo (vn_prima),
