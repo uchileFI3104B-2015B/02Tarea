@@ -7,6 +7,21 @@ w=1
 eta=1 #entre 0 y 1
 v0=2 #mayor que w
 '''----------------------------------------------------------------'''
+def encontrar_cero(f,a,b,err=0.01,itera=40):
+    '''Funcion que recibe una funcion y encuentra un cero mediante el metodo de biseccion '''
+    p = (a+b)/2.
+    i = 1
+    while(np.fabs(f(p))>err)and(i<itera):
+        if f(p) == 0:
+            return p
+        if f(a) * f(p) > 0:
+            a = p
+        else:
+            b = p
+        p = (a + b)/2.
+        i += 1
+    return p
+
 def avanzar_salto(yn,vn_prima):
     '''Funcion que recibe la posicion del choque n-esimo (yn),
     y la velcidad justo despues del choque n-esimo (vn_prima),
@@ -16,7 +31,8 @@ def avanzar_salto(yn,vn_prima):
     tn = np.arcsin(yn)/w
     #definiremos funciones auxiliares a las cuales les buscaremos los ceros
     f_auxiliar = lambda t: yn-t^2/2+t*vn_prima-np.sin(w(t+tn))
-    t1=encontrar_cero(f_auxiliar)
+    (a,b)=busca_bajo_piso(f_auxiliar)
+    t1=encontrar_cero(f_auxiliar,a,b)
     yn1 = yn-t1^2/2+t1*vn_prima
     vn1_prima = (1+eta)*w*cos(w(t1+tn))-eta*(vn_prima-t1)
     return(yn1,vn1_prima)
