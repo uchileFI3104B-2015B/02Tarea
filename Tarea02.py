@@ -22,15 +22,17 @@ v_p = 0. #velocidad justo antes del choque
 v_s = 0. #velocidad del suelo
 
 A = 1.  #Amplitud
-w = 1.  #Frecuencia
-n = 0. #coeficiente de restitucion
+w = 1.5  #Frecuencia del suelo
+n = 0.5  #coeficiente de restitucion
 m = 1.  #masa
 g = 1.
-y0 =  0 #pegado al suelo
-v0 =  0 #velocidad inicial
+y0 = 0 #pegado al suelo
+v0 = 0 #velocidad inicial
 
 R_s = lambda x : A*np.sin(w*x) #Posicion del suelo
 V_s = lambda x : A*w*np.cos(w*x) #Velocidad del suelo
+
+V_p = lambda x : x #Velocidad de la particula
 
 a = np.arange(0,4*np.pi,0.01)
 
