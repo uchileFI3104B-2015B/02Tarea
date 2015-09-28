@@ -47,25 +47,26 @@ def avanzar_salto(yn,vn_prima):
     yn1 = yn-t1**2/2.+t1*vn_prima
     vn1_prima = (1+eta)*w*cos(w*(t1+tn))-eta*(vn_prima-t1)
     return(t1,yn1,vn1_prima)
-'''----------------------------------------------------------------------'''
-#intentaremos encontrar choques para luego graficarlos
-(tn,yn,vn)=([],[],[])
-tn.append(0)
-yn.append(0)
-vn.append(v0)
-for i in range (0,199):
-    (a,b,c)=avanzar_salto(yn[i],vn[i])
-    tn.append(a+tn[i])
-    yn.append(b)
-    vn.append(c)
-t_choques=tn
-y_choques=yn
+
+def llenar_choques(cantidad):
+    '''Recibe la cantidad de choques a computar, devuelve el tiempo y la posición en ue ocurren, además de la velocidad justo después de cada choque'''
+    #intentaremos encontrar choques para luego graficarlos
+    (tn,yn,vn)=([],[],[])
+    tn.append(0)
+    yn.append(0)
+    vn.append(v0)
+    for i in range (0,cantidad-1):
+        (a,b,c)=avanzar_salto(yn[i],vn[i])
+        tn.append(a+tn[i])
+        yn.append(b)
+        vn.append(c)
+    return (tn,yn,vn)
 '''---------------------------------------------------------------'''
 #gráfico de los 2 primeros choques
 plt.figure(1)
 plt.clf()
 
-
+(tn,yn,vn)=llenar_choques(200)
 t_values = np.linspace(0,18, 100)
 y= lambda t: -t**2/2. + v0*t
 y_values= [y(i) for i in t_values]
@@ -77,8 +78,8 @@ plt.plot(t_values, np.sin(w * t_values), label='piso')
 
 plt.plot(t_values, y_values,color='red', label='pelota')
 plt.plot(t_values, y2_values,color='red', label='pelota')
-plt.axvline(t_choques[1], color='g')
-plt.axvline(t_choques[2], color='g')
+plt.axvline(tn[1], color='g')
+plt.axvline(tn[2], color='g')
 
 '''----------------------------------------------------------'''
 #estimación Nrelax
@@ -86,4 +87,10 @@ plt.figure(2)
 plt.clf()
 n=np.linspace(0,200,200)
 plt.plot(n,vn)
+
+w=1.68
+
+w=1.7
+
+
 show()
