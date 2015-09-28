@@ -101,8 +101,8 @@ plt.axvline(cero[2], color='b')
 
 plt.draw()
 plt.show()
-#---------------------------------Parte 2 -------------------------------------#
-def Nrelax(fin):
+#---------------------------------Parte 2-3 -------------------------------------#
+def Nrelax(fin,omega):
     i=0
     P=[h0]
     V=[v0]
@@ -116,15 +116,22 @@ def Nrelax(fin):
         print V[i]
     return V
 
-Velocidad=Nrelax(10)
+Velocidades1=Nrelax(10,1.66)
+Velocidades2=Nrelax(10,1.67)
+Velocidades3=Nrelax(10,1.68)
+Velocidades4=Nrelax(10,1.69)
+Velocidades5=Nrelax(10,1.70)
 
 plt.figure(2)
 plt.clf()
 
 N=np.linspace(0,10,11)
 
-plt.plot(N,Velocidad, label='Nrelax')
-
+plt.plot(N,Velocidades1, label='$N_{relax}\;\omega=1.66$')
+plt.plot(N,Velocidades2, label='$N_{relax}\;\omega=1.67$')
+plt.plot(N,Velocidades3, label='$N_{relax}\;\omega=1.68$')
+plt.plot(N,Velocidades4, label='$N_{relax}\;\omega=1.69$')
+plt.plot(N,Velocidades5, label='$N_{relax}\;\omega=1.70$')
 
 plt.legend()
 
