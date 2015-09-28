@@ -24,8 +24,8 @@ def encontrar_cero(f,a,b,err=0.01,itera=40):
 
 def busca_bajo_piso(f,dx,a=0.01,max_=10000):
     '''recorre la funcion con un paso dado hasta encontrar un punto donde sea negativa'''
-     u=a
-     i=0
+    u=a
+    i=0
     while (f(u) > 0) and (i < max_) :
         u+=dx
         i+=1
@@ -41,10 +41,19 @@ def avanzar_salto(yn,vn_prima):
     #tn se define como el tiempo en que se produce el choque n-esimo
     tn = np.arcsin(yn)/w
     #definiremos funciones auxiliares a las cuales les buscaremos los ceros
-    f_auxiliar = lambda t: yn-t^2/2+t*vn_prima-np.sin(w(t+tn))
+    f_auxiliar = lambda t: yn-t^2/2.+t*vn_prima-np.sin(w(t+tn))
     (a,b)=busca_bajo_piso(f_auxiliar)
     t1=encontrar_cero(f_auxiliar,a,b)
-    yn1 = yn-t1^2/2+t1*vn_prima
+    yn1 = yn-t1**2/2.+t1*vn_prima
     vn1_prima = (1+eta)*w*cos(w(t1+tn))-eta*(vn_prima-t1)
     return(yn1,vn1_prima)
 '''----------------------------------------------------------------------'''
+plt.figure(1)
+plt.clf()
+
+t_values = np.linspace(0,6, 40)
+y= lambda t: -t**2/2. + v0*t
+y_values= [y(i) for i in t_values]
+plt.plot(t_values, np.sin(w * t_values), label='piso')
+plt.plot(t_values, y_values,color='red', label='pelota')
+show()
