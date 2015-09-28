@@ -3,8 +3,8 @@ from pylab import *
 import matplotlib.pyplot as plt
 '''------------------------------------------------------------------'''
 #datos del problema
-w=1
-eta=1 #entre 0 y 1
+w=1.66
+eta=0.15 #entre 0 y 1
 v0=2 #mayor que w
 '''----------------------------------------------------------------'''
 def encontrar_cero(f,a,b,err=0.0001,itera=40):
@@ -53,7 +53,7 @@ def avanzar_salto(yn,vn_prima):
 tn.append(0)
 yn.append(0)
 vn.append(v0)
-for i in range (0,4):
+for i in range (0,199):
     (a,b,c)=avanzar_salto(yn[i],vn[i])
     tn.append(a+tn[i])
     yn.append(b)
@@ -61,6 +61,7 @@ for i in range (0,4):
 t_choques=tn
 y_choques=yn
 '''---------------------------------------------------------------'''
+#gráfico de los 2 primeros choques
 plt.figure(1)
 plt.clf()
 
@@ -78,4 +79,11 @@ plt.plot(t_values, y_values,color='red', label='pelota')
 plt.plot(t_values, y2_values,color='red', label='pelota')
 plt.axvline(t_choques[1], color='g')
 plt.axvline(t_choques[2], color='g')
+
+'''----------------------------------------------------------'''
+#estimación Nrelax
+plt.figure(2)
+plt.clf()
+n=np.linspace(0,200,200)
+plt.plot(n,vn)
 show()
