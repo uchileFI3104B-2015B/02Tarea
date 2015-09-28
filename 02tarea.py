@@ -83,14 +83,22 @@ plt.axvline(tn[2], color='g')
 
 '''----------------------------------------------------------'''
 #estimación Nrelax
-plt.figure(2)
-plt.clf()
+plt.subplot(3, 1, 1)
 n=np.linspace(0,200,200)
 plt.plot(n,vn)
 
-w=1.68
+plt.subplot(3, 1, 2)
+w=1.67
+Nr=600
+n=np.linspace(0,Nr,Nr)
+(tn,yn,vn)=llenar_choques(Nr)
+plt.plot(n,vn,color='red')
 
-w=1.7
+plt.subplot(3, 1, 3)
+w=1.68
+n=np.linspace(0,500,500)
+(tn,yn,vn)=llenar_choques(500)
+plt.plot(n,vn,color='g')
 
 
 show()
