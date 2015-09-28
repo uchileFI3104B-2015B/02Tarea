@@ -41,19 +41,33 @@ def avanzar_salto(yn,vn_prima):
     #tn se define como el tiempo en que se produce el choque n-esimo
     tn = np.arcsin(yn)/w
     #definiremos funciones auxiliares a las cuales les buscaremos los ceros
-    f_auxiliar = lambda t: yn-t^2/2.+t*vn_prima-np.sin(w(t+tn))
-    (a,b)=busca_bajo_piso(f_auxiliar)
+    f_auxiliar = lambda t: yn-t**2/2.+t*vn_prima-np.sin(w*(t+tn))
+    (a,b)=busca_bajo_piso(f_auxiliar,0.01)
     t1=encontrar_cero(f_auxiliar,a,b)
     yn1 = yn-t1**2/2.+t1*vn_prima
-    vn1_prima = (1+eta)*w*cos(w(t1+tn))-eta*(vn_prima-t1)
-    return(yn1,vn1_prima)
+    vn1_prima = (1+eta)*w*cos(w*(t1+tn))-eta*(vn_prima-t1)
+    return(t1,yn1,vn1_prima)
 '''----------------------------------------------------------------------'''
+#intentaremos encontrar los 4 primeros choques para luego graficarlos
+(tn,yn,vn)=([],[],[])
+tn.append(0)
+yn.append(0)
+vn.append(v0)
+for i in range (0,4):
+    (a,b,c)=avanzar_salto(yn[i],vn[i])
+    tn.append(a)
+    yn.append(b)
+    vn.append(c)
+t_choques=tn
+'''---------------------------------------------------------------'''
 plt.figure(1)
 plt.clf()
+
 
 t_values = np.linspace(0,6, 40)
 y= lambda t: -t**2/2. + v0*t
 y_values= [y(i) for i in t_values]
 plt.plot(t_values, np.sin(w * t_values), label='piso')
 plt.plot(t_values, y_values,color='red', label='pelota')
+plt.axvline(t_choques[1], color='g')
 show()
