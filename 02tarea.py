@@ -7,7 +7,7 @@ w=1
 eta=1 #entre 0 y 1
 v0=2 #mayor que w
 '''----------------------------------------------------------------'''
-def encontrar_cero(f,a,b,err=0.01,itera=40):
+def encontrar_cero(f,a,b,err=0.0001,itera=40):
     '''Funcion que recibe una funcion y encuentra un cero mediante el metodo de biseccion '''
     p = (a+b)/2.
     i = 1
@@ -22,7 +22,7 @@ def encontrar_cero(f,a,b,err=0.01,itera=40):
         i += 1
     return p
 
-def busca_bajo_piso(f,dx,a=0.01,max_=10000):
+def busca_bajo_piso(f,dx,a=0.001,max_=10000):
     '''recorre la funcion con un paso dado hasta encontrar un punto donde sea negativa'''
     u=a
     i=0
@@ -42,32 +42,40 @@ def avanzar_salto(yn,vn_prima):
     tn = np.arcsin(yn)/w
     #definiremos funciones auxiliares a las cuales les buscaremos los ceros
     f_auxiliar = lambda t: yn-t**2/2.+t*vn_prima-np.sin(w*(t+tn))
-    (a,b)=busca_bajo_piso(f_auxiliar,0.01)
+    (a,b)=busca_bajo_piso(f_auxiliar,0.001)
     t1=encontrar_cero(f_auxiliar,a,b)
     yn1 = yn-t1**2/2.+t1*vn_prima
     vn1_prima = (1+eta)*w*cos(w*(t1+tn))-eta*(vn_prima-t1)
     return(t1,yn1,vn1_prima)
 '''----------------------------------------------------------------------'''
-#intentaremos encontrar los 4 primeros choques para luego graficarlos
+#intentaremos encontrar choques para luego graficarlos
 (tn,yn,vn)=([],[],[])
 tn.append(0)
 yn.append(0)
 vn.append(v0)
 for i in range (0,4):
     (a,b,c)=avanzar_salto(yn[i],vn[i])
-    tn.append(a)
+    tn.append(a+tn[i])
     yn.append(b)
     vn.append(c)
 t_choques=tn
+y_choques=yn
 '''---------------------------------------------------------------'''
 plt.figure(1)
 plt.clf()
 
 
-t_values = np.linspace(0,6, 40)
+t_values = np.linspace(0,18, 100)
 y= lambda t: -t**2/2. + v0*t
 y_values= [y(i) for i in t_values]
+
+y2= lambda t: yn[1]-(t-tn[1])**2/2. + vn[1]*(t-tn[1])
+y2_values= [y2(i) for i in t_values]
+
 plt.plot(t_values, np.sin(w * t_values), label='piso')
+
 plt.plot(t_values, y_values,color='red', label='pelota')
+plt.plot(t_values, y2_values,color='red', label='pelota')
 plt.axvline(t_choques[1], color='g')
+plt.axvline(t_choques[2], color='g')
 show()
