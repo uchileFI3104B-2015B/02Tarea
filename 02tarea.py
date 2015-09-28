@@ -48,12 +48,12 @@ def avanzar_salto(yn,vn_prima):
     vn1_prima = (1+eta)*w*cos(w*(t1+tn))-eta*(vn_prima-t1)
     return(t1,yn1,vn1_prima)
 
-def llenar_choques(cantidad):
+def llenar_choques(t0,y0,v0,cantidad):
     '''Recibe la cantidad de choques a computar, devuelve el tiempo y la posición en ue ocurren, además de la velocidad justo después de cada choque'''
     #intentaremos encontrar choques para luego graficarlos
     (tn,yn,vn)=([],[],[])
-    tn.append(0)
-    yn.append(0)
+    tn.append(t0)
+    yn.append(y0)
     vn.append(v0)
     for i in range (0,cantidad-1):
         (a,b,c)=avanzar_salto(yn[i],vn[i])
@@ -66,7 +66,7 @@ def llenar_choques(cantidad):
 plt.figure(1)
 plt.clf()
 
-(tn,yn,vn)=llenar_choques(200)
+(tn,yn,vn)=llenar_choques(0,0,v0,200)
 t_values = np.linspace(0,18, 100)
 y= lambda t: -t**2/2. + v0*t
 y_values= [y(i) for i in t_values]
@@ -83,6 +83,7 @@ plt.axvline(tn[2], color='g')
 
 '''----------------------------------------------------------'''
 #estimación Nrelax
+plt.figure(2)
 plt.subplot(3, 1, 1)
 n=np.linspace(0,200,200)
 plt.plot(n,vn)
@@ -91,14 +92,33 @@ plt.subplot(3, 1, 2)
 w=1.67
 Nr=600
 n=np.linspace(0,Nr,Nr)
-(tn,yn,vn)=llenar_choques(Nr)
+(tn,yn,vn)=llenar_choques(0,0,v0,Nr)
 plt.plot(n,vn,color='red')
 
 plt.subplot(3, 1, 3)
-w=1.68
-n=np.linspace(0,500,500)
-(tn,yn,vn)=llenar_choques(500)
+w=1.672
+Nr=600
+n=np.linspace(0,Nr,Nr)
+(tn,yn,vn)=llenar_choques(0,0,v0,Nr)
 plt.plot(n,vn,color='g')
-
+'''--------------------------------------------------------------------------'''
+'''Siga usando η=0.15. Haga un gráfico de v'n
+versus ω con ω entre 1.66 y 1.79 y n =2×Nrelax,..., 2×Nrelax + 49,
+ es decir, ploteará 50 valores de v'n por cada valor de ω.
+ Si algún valor de ω le parece interesante, haga la grilla más fina en ese sector.
+'''
+plt.figure(3)
+t0_w=0
+y0_w=0
+v0_w=0
+for w in linspace(1.66,1.7,10):
+    n=250
+    (tn,yn,vn)=llenar_choques(t0_w,y0_w,v0_w,n)
+    vn_values=vn[200:]
+    t0_w=tn[n-1]
+    y0_w=yn[n-1]
+    v0_w=vn[n-1]
+    w_values=np.ones(len(vn_values))*w
+    plt.scatter(w_values,vn_values)
 
 show()
