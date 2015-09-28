@@ -1,5 +1,6 @@
 import numpy as np
 from pylab import *
+from scipy import optimize
 import matplotlib.pyplot as plt
 '''------------------------------------------------------------------'''
 #datos del problema
@@ -42,8 +43,9 @@ def avanzar_salto(yn,vn_prima):
     tn = np.arcsin(yn)/w
     #definiremos funciones auxiliares a las cuales les buscaremos los ceros
     f_auxiliar = lambda t: yn-t**2/2.+t*vn_prima-np.sin(w*(t+tn))
-    (a,b)=busca_bajo_piso(f_auxiliar,0.001)
+    (a,b)=busca_bajo_piso(f_auxiliar,0.1)
     t1=encontrar_cero(f_auxiliar,a,b)
+    #t1=scipy.optimize.brentq(f_auxiliar,a,b)
     yn1 = yn-t1**2/2.+t1*vn_prima
     vn1_prima = (1+eta)*w*cos(w*(t1+tn))-eta*(vn_prima-t1)
     return(t1,yn1,vn1_prima)
@@ -111,7 +113,8 @@ plt.figure(3)
 t0_w=0
 y0_w=0
 v0_w=0
-for w in linspace(1.66,1.7,10):
+
+for w in linspace(1.66,1.67,5):
     n=250
     (tn,yn,vn)=llenar_choques(t0_w,y0_w,v0_w,n)
     vn_values=vn[200:]
@@ -121,4 +124,24 @@ for w in linspace(1.66,1.7,10):
     w_values=np.ones(len(vn_values))*w
     plt.scatter(w_values,vn_values)
 
+#valores interesantes
+for w in linspace(1.67,1.675,10):
+    n=250
+    (tn,yn,vn)=llenar_choques(t0_w,y0_w,v0_w,n)
+    vn_values=vn[200:]
+    t0_w=tn[n-1]
+    y0_w=yn[n-1]
+    v0_w=vn[n-1]
+    w_values=np.ones(len(vn_values))*w
+    plt.scatter(w_values,vn_values)
+#fin valores interesantes    
+for w in linspace(1.675,1.7,5):
+    n=250
+    (tn,yn,vn)=llenar_choques(t0_w,y0_w,v0_w,n)
+    vn_values=vn[200:]
+    t0_w=tn[n-1]
+    y0_w=yn[n-1]
+    v0_w=vn[n-1]
+    w_values=np.ones(len(vn_values))*w
+    plt.scatter(w_values,vn_values)
 show()
