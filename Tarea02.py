@@ -58,9 +58,10 @@ def ChoqueN(Yn,Vn,omega,A,nu,tc):
         d=distancia(t,omega,A,h0,v0,tc)
         return d
 
-    t1=Vn+np.sqrt(Vn**2+2*Yn-4)+tc
-    t2=Vn+np.sqrt(Vn**2+2*Yn+4)+tc
+    tm=Vn+np.sqrt(Vn**2+2*np.fabs(Yn))+tc
     delta=0.001
+    t1=tm-delta
+    t2=tm+delta
     while (distanciat(t1)*distanciat(t2)>0.0):
             t1=t1-delta
             t2=t2+delta
@@ -76,11 +77,11 @@ def ChoqueN(Yn,Vn,omega,A,nu,tc):
 
 
 
-omega=1.66
+omega=1.7
 A=1.0
 nu=0.15
 h0=0.0
-v0=20
+v0=100
 
 cero=ChoqueN(h0,v0,omega,A,nu,0)
 t_values= np.linspace(0,2*cero[2],100)
@@ -115,12 +116,12 @@ def Nrelax(fin):
         print V[i]
     return V
 
-Velocidad=Nrelax(5)
+Velocidad=Nrelax(10)
 
 plt.figure(2)
 plt.clf()
 
-N=np.linspace(0,5,6)
+N=np.linspace(0,10,11)
 
 plt.plot(N,Velocidad, label='Nrelax')
 
