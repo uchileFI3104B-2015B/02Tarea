@@ -58,8 +58,8 @@ def ChoqueN(Yn,Vn,omega,A,nu,tc):
         d=distancia(t,omega,A,h0,v0,tc)
         return d
 
-    t1=Vn+np.sqrt(Vn**2+2*Yn-4)+tc
-    t2=Vn+np.sqrt(Vn**2+2*Yn+4)+tc
+    t1=Vn+np.sqrt(Vn**2+2*Yn)+tc
+    t2=Vn+np.sqrt(Vn**2+2*Yn)+tc
     delta=0.001
     while (distanciat(t1)*distanciat(t2)>0.0):
             t1=t1-delta
@@ -76,56 +76,24 @@ def ChoqueN(Yn,Vn,omega,A,nu,tc):
 
 
 
-omega=1.66
+omega=1.7
 A=1.0
 nu=0.15
 h0=0.0
-v0=20
+v0=10.0
 
-cero=ChoqueN(h0,v0,omega,A,nu,0)
-t_values= np.linspace(0,2*cero[2],100)
-plt.figure(1)
-plt.clf()
-
-
-
-plt.plot(t_values, Yp(t_values,h0,v0), label='particula')
-plt.plot(t_values, Ps(t_values,omega,A), label='membrana')
-
-
-plt.legend()
-
-
-plt.axvline(cero[2], color='b')
-
-plt.draw()
-plt.show()
-#---------------------------------Parte 2 -------------------------------------#
-def Nrelax(fin):
-    i=0
-    P=[h0]
-    V=[v0]
-    tc=[0]
-    while i<fin:
-        vec=ChoqueN(P[i],V[i],omega,A,nu,tc[i])
-        P+=[vec[0]]
-        V+=[vec[1]]
-        tc+=[vec[2]]
-        i+=1
-        print V[i]
-    return V
-
-Velocidad=Nrelax(5)
-
-plt.figure(2)
-plt.clf()
-
-N=np.linspace(0,5,6)
-
-plt.plot(N,Velocidad, label='Nrelax')
-
-
-plt.legend()
-
-plt.draw()
-plt.show()
+N1=ChoqueN(h0,v0,omega,A,nu,0)
+N2=ChoqueN(N1[0],N1[1],omega,A,nu,N1[2])
+N3=ChoqueN(N2[0],N2[1],omega,A,nu,N2[2])
+N4=ChoqueN(N3[0],N3[1],omega,A,nu,N3[2])
+N5=ChoqueN(N4[0],N4[1],omega,A,nu,N4[2])
+N6=ChoqueN(N5[0],N5[1],omega,A,nu,N5[2])
+N7=ChoqueN(N6[0],N6[1],omega,A,nu,N6[2])
+N8=ChoqueN(N7[0],N7[1],omega,A,nu,N7[2])
+N9=ChoqueN(N8[0],N1[1],omega,A,nu,N8[2])
+N10=ChoqueN(N9[0],N2[1],omega,A,nu,N9[2])
+N11=ChoqueN(N10[0],N3[1],omega,A,nu,N10[2])
+N12=ChoqueN(N11[0],N4[1],omega,A,nu,N11[2])
+N13=ChoqueN(N12[0],N5[1],omega,A,nu,N12[2])
+N14=ChoqueN(N13[0],N6[1],omega,A,nu,N13[2])
+N15=ChoqueN(N14[0],N7[1],omega,A,nu,N14[2])
