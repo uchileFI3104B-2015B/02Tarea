@@ -30,7 +30,7 @@ g = 1.
 
 R_s = lambda x : A*np.sin(w*x) #Posicion del suelo
 V_s = lambda x : A*w*np.cos(w*x) #Velocidad del suelo
-R_p = lambda x : V_p*x     #Posicion de la particula
+R_p = lambda x,y : y*x     #Posicion de la particula x Velocidad, y tiempo
 V_p = lambda x : x     #Velocidad de la particula antes del impacto
 V_p1 = lambda x, h : (1+n)*V_s(x) - n*V_p(x-h) #Velocidad de la particula despues del impacto
 
@@ -39,14 +39,25 @@ v0 = 0 #velocidad inicial
 h = 0.001 #paso dt
 tf = 10 #tiempo final
 
-a = np.arange(0, tf, h) #intervalo discreto
+dt = np.arange(0, tf, h) #intervalo de tiempo discreto
 
-V1 = np.zeros(len(a))  #velocidad luego del choque
+
+V1 = np.zeros(len(dt))  #velocidad luego del choque
 V1[0] = 2.
-for i in range(len(a)):
-    V1[i] = V_p1(a[i],h*i)
+for i in range(len(dt)):
+    V1[i] = V_p1(dt[i],h*i)
 
-
-
-plt.plot(a,V1)
+plt.plot(dt,R_p(V1,dt))
 plt.show()
+
+''''
+ver que como implementar correctamente:
+tengo la posicion y la velocidad del suelo
+la posicion inicial de la particula
+debo darme una velocidad inicial
+calcular la velocidad' de la relacion con el suelo y eta
+ver como calcular la posicion de la particula (integrar?)
+intersectar la posicion de la particula con la del suelo
+usar ese tiempo y repetir n veces
+buena suerte D:
+'''
