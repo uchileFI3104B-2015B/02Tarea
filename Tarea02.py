@@ -26,15 +26,27 @@ w = 1.5  #Frecuencia del suelo
 n = 0.5  #coeficiente de restitucion
 m = 1.  #masa
 g = 1.
-y0 = 0 #pegado al suelo
-v0 = 0 #velocidad inicial
+
 
 R_s = lambda x : A*np.sin(w*x) #Posicion del suelo
 V_s = lambda x : A*w*np.cos(w*x) #Velocidad del suelo
+R_p = lambda x : V_p*x     #Posicion de la particula
+V_p = lambda x : x     #Velocidad de la particula antes del impacto
+V_p1 = lambda x, h : (1+n)*V_s(x) - n*V_p(x-h) #Velocidad de la particula despues del impacto
 
-V_p = lambda x : x #Velocidad de la particula
+y0 = 0 #pegado al suelo
+v0 = 0 #velocidad inicial
+h = 0.001 #paso dt
+tf = 10 #tiempo final
 
-a = np.arange(0,4*np.pi,0.01)
+a = np.arange(0, tf, h) #intervalo discreto
 
-plt.plot(a,R_s(a))
+V1 = np.zeros(len(a))  #velocidad luego del choque
+V1[0] = 2.
+for i in range(len(a)):
+    V1[i] = V_p1(a[i],h*i)
+
+
+
+plt.plot(a,V1)
 plt.show()
