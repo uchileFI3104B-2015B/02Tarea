@@ -4,7 +4,7 @@ import numpy as np
 #from astropy import constants as v
 #from scipy import integrate as s
 #import time
-from scipy import optimize as opt
+from scipy.optimize import brentq
 import matplotlib.pyplot as plt
 
 
@@ -38,12 +38,12 @@ v0=4
 def choque(y_n,v_n):
     g=-1
     A=1
-    ys=sen(t,A,w)
+    ys=A*np.sin(w*t)
     yp=((1/2)*g*t**2)+v_n*t+y_n
     maxp=-v_n/(g)
     minp=(-v_n+(v_n**2-4*g*(y_n-A))**(0.5))/(2*g)
     y=yp-ys
-    s = opt.bisect(y,maxp,minp)
+    s = brentq(y,maxp,minp)
     return s
 
 
