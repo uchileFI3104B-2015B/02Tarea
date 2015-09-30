@@ -2,50 +2,55 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy import optimize as opt
 
-t=np.linspace(0,10,1000);
 A=1 #fijo
 g=1 #fijo
 m=1 #fijo
 w=1
-rest=0.5 #va de 0 a 1
-y_0=0
-v_0=2 #debe ser mayor que A*w
-n=10 #número de rebotes
-times=[]; #vector que contendrá los tiempos en que se producen los rebotes
+rest=0.1 #va de 0 a 1
+n=3 #número de rebotes
 
-def floor(t):
-    y_s=A*np.sin(w*t); #posición del suelo
-    return y_s
-def particle(t):
-    y_p=y_0+(v_0*t)-((1/2.)*g*t**2); #posición de la partícula
-    return y_p
-def floorv(t):
-    v_s=A*w*np.cos(w*t); #velocidad del suelo
-    return v_s
-def particlev(t):
-    v_p=v_0-g*t #velocidad de la partícula
-    return v_p
-def collision(t):
-    v_p_new=(1+rest)*floorv(t)-rest*particlev(t) #cambio de velocidad de la partícula al chocar
-    return v_p_new
-def resta(x):
-    y=floor(x)-particle(x)
-    return y
+y=[]; #vector que contendrá las alturas de los choques
+v=[]; #vector que contendrá las velocidades después de los choques
+fase=[]; #vector que contendrá la fase del piso en cada choque
 
-plt.figure(1)
-plt.clf()
+y=np.append(y,0) #cero corresponde a la posición inicial
+v=np.append(v,10) #dos corresponde a la velocidad inicial, se puede cambiar
+fase=np.append(fase,0) #cero es la fase inicial
 
-for i in range(0,n):
-    zero_i=opt.bisect(resta,4+i,6+i); #falta determinar los instantes entre los cuales la wea choca
-    times.insert(i,zero_i) #inserta el tiempo en que ocurre el choque i
-    v_p_new=(1+rest)*floorv(zero_i)-rest*particlev(zero_i) #velocidad de la particula despues de chocar por 1ra vez
-    y_0_new=particle(zero_i)
-    def particle(t):
-        y_p=(y_0_new)+(v_p_new*(t-zero_i))-((1/2.)*g*(t-zero_i)**2); #redefino la ecuación de movimiento de la partícula
-        return y_p
-    plt.plot(t,floor(t),'r',t,particle(t),'b')
-    plt.axvline(zero_i,color='g')
+def particle(t,y0,v0):
+    yp=y0+v0*t-(1/2.)*g*t**2
+    return yp
+def velpart(t,v0):
+    vp=v0-g*t
+    return vp
+def floor(t,phi):
+    ys=A*np.sin(w*t+phi)
+    return ys
+def velfloor(t,phi):
+    vs=A*w*np.cos(w*t+phi)
+    return vs
+def collision(t,v0,phi):
+    vp_new=(1+rest)*velfloor(t,phi)-rest*velpart(t,v0)
+    return np.fabs(vp_new)
 
-plt.xlabel('Tiempo [s]')
-plt.ylabel('Altura [m]')
-plt.show()
+for i in range(1,n):
+    def resta(t):
+        r=particle(t,y[i-1],v[i-1])-floor(t,fase[i-1])
+        return r
+    inf=v[i-1]/g
+    sup=(v[i-1]-np.sqrt(v[i-1]**2+2*g*(A+y[i-1])))/g
+    zero=opt.bisect(resta,inf,sup)
+    y_new=particle(zero,y[i-1],v[i-1])
+    v_new=collision(zero,v[i-1],fase[i-1])
+    fase_new=np.arcsin((y[i-1]/A)+(v[i-1]*zero/A)-(g*zero**2/(2*A)))
+    y=np.append(y,y_new)
+    v=np.append(v,v_new)
+    fase=np.append(fase,fase_new)
+
+#t=np.linspace(0,10,1000)
+#plt.figure()
+#plt.clf()
+#plt.plot(t,floor(t,fase[4]),'r',t,particle(t,y[4],v[4]))
+#plt.show()
+print(y)
+print(v)
