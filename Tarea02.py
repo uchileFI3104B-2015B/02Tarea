@@ -69,7 +69,7 @@ w = 1.5  #Frecuencia del suelo
 n = 0.3  #coeficiente de restitucion
 m = 1.  #masa
 g = 1.  #aceleracion de gravedad
-
+V = 1. #Velocidad inicial
 ti = 0  #tiempo inicial
 tf = 10 #tiempo final
 h = 0.001 #paso
@@ -83,14 +83,15 @@ V_p= np.zeros(len(dt))  #velocidad de la particula
 
 fR_s = lambda x : A*np.sin(w*x) #Posicion del suelo, x variable tiempo
 fV_s = lambda x : A*w*np.cos(w*x) #Velocidad del suelo, x variable tiempo
-fR_p = lambda V: V*dt -(1/2)*g*(dt**2) #posion de la particula,x tiempo, Vel despues del impacto
+fR_p = lambda x: V*x -(1/2)*g*(x**2) #posion de la particula,x tiempo, Vel despues del impacto
 fV_p1 = lambda x, h : (1+n)*V_s(x) - n*V_p(x-h) #Velocidad de la particula despues del impacto
 
-V_pa[0] = 5 #velocidad inicial antes del primer impacto (inicial)
+V_pa[0] = V #velocidad inicial antes del primer impacto (inicial)
 V_pd[0] = (1+n)*fV_s(0) - n*V_pa[0] #velocidad despues del primer impacto (inicial)
-R_p[0] = lambda x,i : V_pd[i]*x -(1/2)*g*(x**2)
+V = V_pd[0] #Velocidad inicial despues del choque
+R_p = lambda x : V*x -(1./2.)*g*(x**2.)
 #R_p = Int.quad(V_pd[0],ti,tf)
 print V_pd[0]
 
-plt.plot(dt,R_p[0](dt,0))
+plt.plot(dt,R_p(dt))
 plt.show()
