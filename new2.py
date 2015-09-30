@@ -30,7 +30,7 @@ plt.clf()
 N=50
 v=[]
 y=[]
-v0=9
+v0=2
 y0=0
 v=np.append(v,v0)
 y=np.append(y,y0)
