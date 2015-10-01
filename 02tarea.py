@@ -93,14 +93,14 @@ plt.clf()
 plt.subplot(3, 1, 1)
 plt.title ("$V_n'$ vs n")
 plt.xlabel('numero de choques')
-plt.ylabel('velocidad')
+plt.ylabel('velocidad [m/s]')
 n=np.linspace(0,200,200)
 plt.plot(n,vn, label='velocidad para $\omega$=1.66')
 plt.legend()
 
 plt.subplot(3, 1, 2)
 plt.xlabel('numero de choques')
-plt.ylabel('velocidad')
+plt.ylabel('velocidad [m/s]')
 w=1.67
 Nr=600
 n=np.linspace(0,Nr,Nr)
@@ -110,7 +110,7 @@ plt.legend()
 
 plt.subplot(3, 1, 3)
 plt.xlabel('numero de choques')
-plt.ylabel('velocidad')
+plt.ylabel('velocidad [m/s]')
 w=1.672
 Nr=600
 n=np.linspace(0,Nr,Nr)
