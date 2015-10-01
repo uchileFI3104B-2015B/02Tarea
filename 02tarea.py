@@ -137,7 +137,7 @@ for w in linspace(1.67,1.675,10):
     w_values=np.ones(len(vn_values))*w
     plt.scatter(w_values,vn_values)
 #fin valores interesantes
-for w in linspace(1.675,1.7,5):
+for w in linspace(1.675,1.79,50):
     n=250
     (tn,yn,vn)=llenar_choques(t0_w,y0_w,v0_w,n)
     vn_values=vn[200:]
