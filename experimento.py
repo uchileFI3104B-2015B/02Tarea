@@ -36,5 +36,5 @@ while i<len(w):
     i+=1
 plt.xlabel('Frecuencia angular $\omega$')
 plt.ylabel('Velocidad despues del bote $v\'_n$')
-plt.title('Valores estacionarios de $v\'_n$ en versus $\omega$ ')
+plt.title('Valores estacionarios de $v\'_n$ versus $\omega$ ')
 plt.savefig('bifurcacion.eps')
