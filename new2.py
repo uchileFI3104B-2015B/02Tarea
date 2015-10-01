@@ -84,3 +84,4 @@ plt.draw()
 plt.show()
 print v
 print n
+print y
