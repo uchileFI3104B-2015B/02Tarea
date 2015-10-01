@@ -74,7 +74,7 @@ def choque(vn,yn,tn):
 plt.figure(1)
 plt.clf()
 
-N=50
+N=100
 v=[]
 y=[]
 t=[]
