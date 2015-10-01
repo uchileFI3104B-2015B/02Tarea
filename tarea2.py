@@ -2,117 +2,102 @@ import numpy as np
 from scipy.optimize import bisect
 import matplotlib.pyplot as plt
 
-#parametros a utilzar
+#condiciones iniciales
 yo=0
 vo=2
-w=1.66
+#coeficiente de restitucion entre 0 y 1
 restitucion=0.15
 
-#funciones de posicion y velocidad de la particula y el suelo
-def pos_p(yo,vo,t):
-    return yo + vo*t-0.5*(t**2)
-def pos_s(w,yo,t):
-    return np.sin(w*t+np.arcsin(yo))
-def vel_p(vo,t):
-    return vo-t
-def vel_s(w,yo,t):
-    return  np.cos(w*t+np.arcsin(yo))*w
-def vel_prima_p(restitucion, w,yo,vo,t):
-    return (1+restitucion) * vel_s(w,yo,t)- vel_p(vo,t)*restitucion
+#funciones de posicion de la particula y del suelo
+def pos_p(yn,vn,t):
+    return yn + vn*t-0.5*(t**2)
+def pos_s(w,t,tn):
+    return np.sin(w*(t+tn))
 
-#funcion que resta la posicion de la particula con la del suelo
-def particula_menos_suelo(yn,vn,w,t):
-    return pos_p(yn,vn,t) - pos_s(w,yn,t)
+#funcion que resta la posicion de la particula con la posicion del suelo
+def particula_menos_suelo(yn,vn,w,t,tn):
+    return pos_p(yn,vn,t) - pos_s(w,t,tn)
 
-#funcion choque para saltos relativamente grandes
+#funcion choque, dado los parametros w, yn, vn, restitucion nos entrega t_choque,
+#y_n1, v_n1.
 def choque(w,yn,vn,restitucion):
+    tn = np.arcsin(yn)/w
     def dist_ps(t):
-        return particula_menos_suelo(yn,vn,w,t)
-    t_estimado=abs(vn*2) # tiempo estimado de choque de la particula con suelo.
-    delta=0.5
-    a=t_estimado-delta
-    b=t_estimado+delta
-    if a<0:
-        a=0.1
-    t_choque=bisect(dist_ps,a,b)
+        return particula_menos_suelo(yn,vn,w,t,tn)
+    t_e=abs(2*vn)
+    delta=1
+    t_choque=bisect(dist_ps,t_e-delta,t_e+delta)
     y_n1=pos_p(yn,vn,t_choque)
-    velocidad_s=vel_s(w,yn,t_choque)
-    velocidad_p=vel_p(vn,t_choque)
-    v_n1=vel_prima_p(restitucion, w, y_n1, velocidad_p, t_choque)
-    return y_n1, v_n1, t_choque
+    v_n1 = (1+restitucion)*w*np.cos(w*(t_choque+tn))-restitucion*(vn-t_choque)
+    return t_choque, y_n1, v_n1
 
-#funcion choque1 para saltos chicos
-def choque1(w,yn,vn,restitucion,a,b):
-    def dist_ps(t):
-        return particula_menos_suelo(yn,vn,w,t)
-     # tiempo estimado de choque de la particula con suelo.
-    if a<0:
-        a=0.1
-    t_choque=bisect(dist_ps,a,b)
-    y_n1=pos_p(yn,vn,t_choque)
-    velocidad_s=vel_s(w,yn,t_choque)
-    velocidad_p=vel_p(vn,t_choque)
-    v_n1=vel_prima_p(restitucion, w, y_n1, velocidad_p, t_choque)
-    return y_n1, v_n1, t_choque
+#funcion que da los vectores tn,yn,vn para la cantidad de choques que
+#se escojan.
+def n_choques(to,yo,vo,choques):
+    (tn,yn,vn)=([],[],[])
+    tn.append(to)
+    yn.append(yo)
+    vn.append(vo)
+    for i in range (0,choques-1):
+        (t,y,v)=choque(w,yn[i],vn[i],restitucion)
+        tn.append(t+tn[i])
+        yn.append(y)
+        vn.append(v)
+    return (tn,yn,vn)
 
-
-tiempo=np.linspace(0,20,10000)
-reb=4 #4rebotes grandes
-reb_peque=2 #2rebotes peque
-
-s=(reb+reb_peque,3)
-raices=np.zeros(s)
-f=(reb+reb_peque,1000)
-t_p=np.zeros(f)
-vn=np.zeros(reb+reb_peque)
-yn=np.zeros(reb+reb_peque)
-
-
+#primera figura que contiene la grafica n vs vn para estimar N_relax
 plt.figure(1)
 plt.clf()
 
-q=0
-posicion_s=pos_s(w,yo,tiempo)
-plt.plot(tiempo,posicion_s, label='suelo',color='r')
-
-for i in range(reb):
-    raices[i]=choque(w,yo,vo,restitucion)
-    t_p[i]=np.linspace(0,raices[i,2],1000)
-    posicion_p=pos_p(yo,vo,t_p[i])
-    if vel_s(w,yo,raices[i,2])<0:
-        w=-abs(w)
-    else:
-        w=abs(w)
-    plt.plot(t_p[i]+q,posicion_p,color='k')
-    plt.axvline(raices[i,2]+q,color='y')
-    yn[i]=yo
-    vn[i]=vo
-
-    q+=raices[i,2]
-    #renovando valores
-    yo= raices[i,0]
-    vo= raices[i,1]
-
-for i in range(reb,reb+reb_peque):
-    raices[i]=choque1(w,yo,vo,restitucion,0.1,1.5)
-    t_p[i]=np.linspace(0,raices[i,2],1000)
-    posicion_p=pos_p(yo,vo,t_p[i])
-    if vel_s(w,yo,raices[i,2])<0:
-        w=-abs(w)
-    else:
-        w=abs(w)
-
-    plt.plot(t_p[i]+q,posicion_p,color='k')
-    plt.axvline(raices[i,2]+q,color='y')
-    yn[i]=yo
-    vn[i]=vo
-
-    q+=raices[i,2]
-    #renovando valores
-    yo= raices[i,0]
-    vo= raices[i,1]
-
+w=1.66
+(tn,yn,vn)=n_choques(0,yo,vo,70)
+n=np.arange(70)
+plt.subplot(3,1,1)
+plt.ylabel('$v_n$', fontsize=25)
+plt.xlabel('cantidad de rebotes')
+plt.plot(n,vn,label='$w_1=1.66$',color='g')
 plt.legend()
+plt.title('$N_{relax}$ para $w_1=1.66, w_2=1.685, w_3=1.7$', fontsize=18)
+
+w=1.685
+(tn,yn,vn)=n_choques(0,yo,vo,10)
+n=np.arange(10)
+plt.subplot(3,1,2)
+plt.ylabel('$v_n$', fontsize=25)
+plt.xlabel('cantidad de rebotes')
+plt.plot(n,vn,label='$w_2=1.685$', color='r')
+plt.legend()
+
+w=1.7
+(tn,yn,vn)=n_choques(0,yo,vo,10)
+n=np.arange(10)
+plt.subplot(3,1,3)
+plt.ylabel('$v_n$', fontsize=25)
+plt.xlabel('cantidad de rebotes')
+plt.plot(n,vn,label='$w_3=1.7$')
+plt.legend()
+
 plt.draw()
-plt.savefig('fig1.png')
 plt.show()
+plt.savefig('figura1.png')
+
+
+
+
+
+
+plt.figure(2)
+plt.clf()
+plt.xlim(1,2)
+
+for w in np.linspace(1.66,1.776,30):
+    (tn,yn,vn)=n_choques(0,yo,vo,150)
+    vni=vn[100:]
+    omega=w*np.ones(50)
+    plt.plot(omega,vni,'o')
+
+
+plt.xlim(1.65,1.8)
+plt.draw()
+plt.show()
+plt.savefig('figura2.png')
