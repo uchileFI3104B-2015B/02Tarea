@@ -66,10 +66,10 @@ buena suerte D:
 '''
 
 A = 1.  #Amplitud
-w = 1.5  #Frecuencia del suelo
+w = 1.62  #Frecuencia del suelo
 n = 0.5  #coeficiente de restitucion
 m = 1.  #masa
-g = 1.  #aceleracion de gravedad
+g = 9.  #aceleracion de gravedad
 R = 0. #posicion inicial
 V = 50. #Velocidad inicial
 ti = 0  #tiempo inicial
@@ -127,13 +127,13 @@ for i in range(5):
 '''
 dt=0.0
 def Pos_Vel(R,V):
-    R_s = lambda x : A*np.sin(w*x)
-    V_s = lambda x : A*w*np.cos(w*x)
+    R_s = lambda x : A*np.sin(w*x+np.arcsin(R))
+    V_s = lambda x : A*w*np.cos(w*x+np.arcsin(R))
     R_p = lambda x : R + V*x -(1./2.)*g*(x**2)
     V_p = lambda x : V - g*x
     V_pa = lambda x : (1+n)*V_s(x) - n*V
     V_pd = lambda x : (1+n)*V_s(x) - n*V_pa(x)
-    f = lambda x : A*np.sin(w*x) + R + V*x -(1./2.)*g*(x**2)
+    f = lambda x : A*np.sin(w*x+np.arcsin(R)) + R + V*x -(1./2.)*g*(x**2)
     dt = 0.00
     while True:
         a = f(0.+dt)
@@ -166,5 +166,5 @@ for i in range(N):
     #    break
 
 
-plt.plot(aN,aV,'o')
+plt.plot(aN,aV)
 plt.show()
