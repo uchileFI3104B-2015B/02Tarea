@@ -15,8 +15,8 @@ from scipy import optimize as op
 #######################################################
 
 A = 1.     #Amplitud
-w = 1.66   #Frecuencia del suelo
-n = 0.15    #Coeficiente de restitucion
+w = 1.70   #Frecuencia del suelo
+n = 0.15   #Coeficiente de restitucion
 m = 1.     #Masa
 g = 9.     #Aceleracion de gravedad
 R = 0.     #Posicion inicial
@@ -34,6 +34,7 @@ def Pos_Vel(R,V):
     Se definen las funciones a usar y se calcula el punto en el que el suelo
     esta en contacto con la particula utilizando el metodo de la biseccion
     para una funcion auxiliar.
+    Al final, R = -R_p(t), el menos es para solucionar un error.
     '''
     R_s = lambda x : A*np.sin(w*x+np.arcsin(R))     #Posicion del suelo
     V_s = lambda x : A*w*np.cos(w*x+np.arcsin(R))   #Velocidad del suelo
@@ -55,8 +56,7 @@ def Pos_Vel(R,V):
     V = V_pd(t)          #Entrega velocidad de la particula despues del choque
     return [R,V,t,R_s(t),V_s(t)]
 
-w = 1.7                #Variar w para la parte 3
-N = 50                   #Numero de choques a encontrar
+N = 50                  #Numero de choques a encontrar
 aN = np.arange(1,N+1,1)  #Arreglo del numero de choques
 aV= np.zeros(N)          #Arreglo de velocidad despues del choque
 for i in range(N):       #Asigna los valores a los arreglos
