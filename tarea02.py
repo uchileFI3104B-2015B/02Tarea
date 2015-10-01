@@ -21,6 +21,7 @@ Código para calcular el movimiento del suelo y la particula
 for i in range(0,len(t)-1):
     pos_suelo[i] = A*sin(w*t[i])
     vel_suelo[i] = A*w*cos(w*t[i])
+    if 
     pos_particula[i] = 
     velP_particula[i] =(g*t[i]**2)/2
     if pos_particula[i]==pos_suelo[i]:
