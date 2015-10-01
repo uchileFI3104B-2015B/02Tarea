@@ -1,19 +1,14 @@
 '''
-Este es un script que
 
-
-Para encontrar el tiempo t* tenemos que intersectar la funcion itinerario de
-la pelota, con la oscilación del suelo
-No se me ocurre como escribirlas, pero los pasos a seguir son:
--Definir la ecuacion itinerario
--Definir la funcion de oscilacion del suelo
--Restarlas e igualarlas a cero para obtener la intersección y el tiempo "t"
-donde se intersectan
--Va a tener muchas soluciones
--Ahi hay que aplicar la recurrencia de alguna forma
--Te necesito a ti para ver como escribir los codigos jajajaja
-Ecuacion itinerario: y_pelota=y0 + v0*t - 0.5*g*(t^2)
-Oscilacion del suelo: y_suelo=A*sin(w*t)
+Este es un script que busca la interseccion entre un suelo que oscila y una
+pelota que describe una trayectoria gracias a la gravedad, es decir, busca los
+choques o rebotes de la particula en este suelo. Para esto se define una funcion
+que resta ambas ecuaciones de movimiento y se buscan los ceros de esta funcion
+con el comando "brentq". Todo este procedimiento se repite tantas veces como
+choques permitan esta particula y el suelo. El numero de iteraciones queda
+determinado por la velocidad con que sale la particula despues del n-esimo
+choque, ya que si esta es negativa es porque la particula quedo por debajo del
+suelo, lo cual no es posible.
 
 '''
 
@@ -24,6 +19,29 @@ from scipy.optimize import bisect
 from scipy.optimize import newton
 from scipy import optimize as opt
 
+#Parametros del problema
+m=1
+g=1
+A=1
+w=2
+n=0.5
+
+#Condiciones iniciales
+y0= 0
+tcero=0
+v0=5    #Este valor se puede ir cambiando para probar cuantos choques hay,
+        #que pasa con ciertas velocidades, etc.
+
+#Contador y vectores para guardar informacion
+i=0
+tiempos=[0]*20
+ypelota=[0]*20
+vpelotachoque=[0]*20
+raices=0
+
+#Intervalos
+a=0.1
+b= (v0 + (((v0**2)+2*(1+y0))**0.5) )
 
 #Ecuaciones de movimiento
 
@@ -47,36 +65,18 @@ def v_pd(t,v,td):
 def ys_menos_yp(t,y,v,td):
     return y_s(t,td) - y_p(t,y,v)
 
-
-#Parametros del problema
-m=1
-g=1
-A=1
-y0= 0
-t0=0
-v0=5
-w=2
-n=0.5
-i=0
-a=0.1
-b= (v0 + (((v0**2)+2*(1+y0))**0.5) )
-tiempos=[0]*20
-ypelota=[0]*20
-vpelotachoque=[0]*20
-raices=0
-
 #iteracion
 while True:
     if v0>1.5:
-        raiz= brentq(ys_menos_yp, a, b, args=(y0,v0,t0))
+        raiz= brentq(ys_menos_yp, a, b, args=(y0,v0,tcero))
         raices+=raiz
         print ('Raiz, tiempo de interseccion')
         print raiz
         y0=y_p(raiz,y0,v0)
         print ('Nuevo y0, posicion de la pelota justo despues del choque')
         print y0
-    #Actualizar valores
-        vs=v_s(raiz,t0)
+        #Actualizar valores
+        vs=v_s(raiz,tcero)
         print ('Velocidad del suelo en la interseccion')
         print vs
         vp=v_p(raiz,v0)
@@ -89,30 +89,26 @@ while True:
         #Actualizar valores del intervalo
         a=0.1
         b= (v0 + (((v0**2)+2*(1+y0))**0.5) )
-        t0=raiz
-        print ('Valores de b, intervalos')
-        print b
-
-        #Agregar valores a vectores
-        tiempos[i]=raiz
-        ypelota[i]=y0
-        vpelotachoque[i]=v0
+        tcero=raiz
+        #print ('Valores de b, intervalos')
+        #print b
+        #print tcero
+        if v0>=0:
+            #Agregar valores a vectores
+            tiempos[i]=raices
+            ypelota[i]=y0
+            vpelotachoque[i]=v0
+        else:
+            break
 
         i+=1
     else:
         break
 
 
+print ('Vector que presenta tiempos en el que sucede cada choque')
 print tiempos
+print ('Vector que presenta la posicion inicial de la pelota luego de cada choque')
 print ypelota
+print ('Vector que presenta la velocidad de la pelota despues de cada choque')
 print vpelotachoque
-
-
-
-#raiz_bisect = bisect(ys_menos_yp, 0.1, 2.5)
-#print raiz_bisect
-#plt.axvline(raiz_bisect, color='g')
-
-#raiz_newton = newton(ys_menos_yp, 2.5)
-#print raiz_newton
-#plt.axvline(raiz_newton, color='b')
