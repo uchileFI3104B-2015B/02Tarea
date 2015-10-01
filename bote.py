@@ -1,25 +1,60 @@
 '''
 Este script contiene el metodo que calcula
 y_n+1, v'_n+1 a partir de y_n, v'_n. Ademas
-requiere el signo de la velocidad del suelo
-al momento del choque
+contiene otras funciones auxiliares necesarias
+para la ejecucion de ella.
 '''
 import numpy as np
 import matplotlib.pyplot as plt
 
 def suelo(t,w,phi,A=1):
+    '''
+    Esta funcion calcula la posicion del suelo,
+    dado el instante de tiempo, la frecuencia
+    angular, la fase asociada, y opcionalmente,
+    la amplitud.
+    '''
     return A*np.sin(w*t+phi)
 
 def velsuelo(t,w,phi,A=1):
+    '''
+    Esta funcion calcula la velocidad del suelo,
+    dado el instante de tiempo, la frecuencia
+    angular, la fase asociada, y opcionalmente,
+    la amplitud.
+    '''
     return A*w*np.cos(w*t+phi)
 
 def masa(t,y0,v0,g=1):
+    '''
+    Esta funcion calcula la posicion de la masa,
+    dado el instante de tiempo, y las condiciones
+    iniciales asociadas al movimiento.
+    '''
     return y0 + v0*t - (g/2.)*(np.power(t,2))
 
 def velmasa(t,v0,g=1):
+    '''
+    Esta funcion calcula la velocidad de la masa,
+    dado el instante de tiempo, y las velocidad
+    inicial.
+    '''
     return v0 - g*t
 
 def outnchoque(yin,vin,w,signo,eta):
+    '''
+    Esta es la funcion que calcula los valores
+    de y_(n+1) y v'_(n+1) a partir de y_n, v'_n.
+    Ademas recibe como parametros el signo de la
+    velocidad del suelo (requerido para despejar
+    de forma unica la trayectoria anterior del
+    suelo en cada paso), la frecuencia de
+    oscilacion del suelo y el coeficiente de
+    restitucion.
+    '''
+    #Manejo de excepciones e inversion de la
+    #fase, en caso de que la velocidad del suelo
+    #sea negativa
     if yin>=1:
         yin=1
     elif yin<=-1:
@@ -27,20 +62,27 @@ def outnchoque(yin,vin,w,signo,eta):
     phi=np.arcsin(yin)
     if signo==-1:
         phi = np.pi -phi
-    dt=0.1 #min(np.pi/(20.*w),np.fabs(2*vin/20.))
+
+    #Experimentalmente se encontro que dt=0.1
+    #era suficientemente pequeno para el rango
+    #de w estudiado
+    dt=0.1
+
+    #Encontrar momento en que la diferencia entre
+    #la posicion de la masa y la del suelo cambia
+    #de signo
     t=0.0001
     while masa(t,yin,vin)>=suelo(t,w,phi):
         t+=dt
 
     #Caso de que la masa m no se despegue
-    #Es decir, avanzar el tiempo haria que la masa
-    #quede bajo el suelo
-    if t==0:
-        dt=0.01
-        yout=suelo(dt,w,phi)
-        vout=(1+eta)*velsuelo(dt,w,phi)-eta*velmasa(dt,vin)
-        signo=velsuelo(dt,w,phi)/np.fabs(velsuelo(dt,w,phi))
-        return yout,vout,signo,dt
+    #Esto se hace para evitar que al avanzar el
+    #tiempo la masa quede bajo el suelo
+    if t==0.0001:
+        yout=suelo(t,w,phi)
+        vout=(1+eta)*velsuelo(t,w,phi)-eta*velmasa(t,vin)
+        signo=velsuelo(t,w,phi)/np.fabs(velsuelo(t,w,phi))
+        return yout,vout,signo,t
 
     ##Biseccion
     a=t-dt
@@ -65,25 +107,33 @@ def outnchoque(yin,vin,w,signo,eta):
     signo=velsuelo(p,w,phi)/np.fabs(velsuelo(p,w,phi))
     return yout, vout, signo, p
 
+#Lo siguiente es para verificar el correcto
+#funcionamiento del metodo antes definido
+if __name__ == '__main__':
+    #Condiciones iniciales
+    y=0
+    v=2
+    s=1
+    t=0
 
-# w=1.66
-# phiin=0
-# y0=0
-# v0=2
-# eta=0.15
-# raiz=outnchoque(y0,v0,w,1,eta)
-# raiz2=outnchoque(raiz[0],raiz[1],w,raiz[2],eta)
-#
-# time1=np.linspace(0,raiz[3],100)
-# time2=np.linspace(raiz[3],raiz2[3]+raiz[3],100)
-# time=np.linspace(0,10,100)
-#
-#
-# plt.figure(1)
-# plt.plot(time,np.sin(time*w),'b')
-# plt.plot(time1,masa(time1,y0,v0),'g')
-# plt.plot(time2,masa(time2-raiz[3],raiz[0],raiz[1]),'g')
-# plt.axvline(raiz[3], color='r')
-# plt.axvline(raiz2[3]+raiz[3], color='r')
-#
-# plt.savefig('test.jpg')
+    #parametros
+    w=1.66
+    eta=0.15
+
+    plt.figure(1)
+    time=np.linspace(0,60,600)
+    plt.plot(time,np.sin(time*w),'b')
+    while t<60:
+        out=outnchoque(y,v,w,s,eta)
+        localt=np.linspace(0,out[3],100)
+        plt.plot(localt+t,masa(localt,y,v),'g')
+        y=out[0] #posicion del choque
+        v=out[1] #v' despues del choque
+        s=out[2] #signo de v_s despues del choque
+        t+=out[3] #tiempo recorrido
+        plt.plot(t,y,'ro')
+    plt.xlabel('Tiempo')
+    plt.ylabel('Posiciones del sistema')
+    plt.title('Comportamiento del sistema en el tiempo, $\omega=1.66$ ')
+    plt.xlim(0,60)
+    plt.savefig('verificacion.eps')
