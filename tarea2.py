@@ -59,13 +59,13 @@ def nmasuno (w, eta, t_reb_n, yn, vn):
     t_a = t_reb_n + epsilon
     while d(t_a) >0:
         t_a+=epsilon
-    t_b=t_a-epsilon
+    t_b = t_a- 5 * epsilon
     if d(t_a)*d(t_b)>0:
-        return [t_a,0,yn]
+        return [t_a,0,y_suelo(w,t_a)]
         #condicion geometrica
 
     #---------------Calculo de valores-----------------#
-    t_reb_n1 = bisect (d, t_a, t_b)  #tiempo del rebote n+1
+    t_reb_n1 = brentq (d, t_a, t_b)  #tiempo del rebote n+1
     yn1 = y_pelota (yn, vn, t_reb_n1 - t_reb_n)
     vs_reb = v_suelo(w, t_reb_n1)
     vp_reb = v_pelota(vn, t_reb_n1 - t_reb_n)
@@ -115,7 +115,7 @@ plt.xlabel('Numero de rebotes')
 plt.ylabel('Velocidad particula justo despues del rebote')
 plt.legend()
 plt.grid(True)
-plt.savefig('Grafico_v0_70.eps')
+plt.savefig('Grafico_v0_2.eps')
 
 #-------------------------------------
 
@@ -135,7 +135,7 @@ plt.plot(Nrelax170[0], Nrelax170[1], label='$\omega=1.70$', color='red')
 plt.legend()
 plt.grid(True)
 
-plt.savefig("Grafico_subplots_v0_70.eps")
+plt.savefig("Grafico_subplots_v0_2.eps")
 
 #---------------------------------------
 
@@ -154,7 +154,7 @@ for omega in np.linspace(1.66, 1.7, 5):
 plt.xlabel('$\omega$')
 plt.ylabel('Velocidad particula justo despues del rebote')
 plt.grid(True)
-plt.savefig("Grafico_p4_v0_70.eps")
+plt.savefig("Grafico_p4_v0_2.eps")
 
 
 plt.show()
