@@ -67,11 +67,11 @@ buena suerte D:
 
 A = 1.  #Amplitud
 w = 1.5  #Frecuencia del suelo
-n = 0.3  #coeficiente de restitucion
+n = 0.5  #coeficiente de restitucion
 m = 1.  #masa
 g = 1.  #aceleracion de gravedad
 R = 0. #posicion inicial
-V = 7. #Velocidad inicial
+V = 500. #Velocidad inicial
 ti = 0  #tiempo inicial
 tf = 10 #tiempo final
 h = 0.001 #paso
@@ -96,7 +96,7 @@ R_p = lambda x : V*x -(1./2.)*g*(x**2.)
 
 V_pa = V #velocidad inicial antes del primer impacto (inicial)
 V_pd = (1+n)*fV_s(0) - n*V_pa[0] #velocidad despues del primer impacto (inicial)
-'''
+
 def Pos_Vel(R,V):
     R_s = lambda x : A*np.sin(w*x)
     V_s = lambda x : A*w*np.cos(w*x)
@@ -124,7 +124,37 @@ for i in range(5):
     print Pos_Vel(R , V)
     R = Pos_Vel(R,V)[0]
     V = Pos_Vel(R,V)[1]
+'''
+dt=0.0
+def Pos_Vel(R,V):
+    R_s = lambda x : A*np.sin(w*x)
+    V_s = lambda x : A*w*np.cos(w*x)
+    R_p = lambda x : R + V*x -(1./2.)*g*(x**2)
+    V_p = lambda x : V - g*x
+    V_pa = lambda x : (1+n)*V_s(x) - n*V
+    V_pd = lambda x : (1+n)*V_s(x) - n*V_pa(x)
+    f = lambda x : A*np.sin(w*x) + R + V*x -(1./2.)*g*(x**2)
+    dt = 0.05
+    while True:
+        a = f(0.+dt)
+        b = f(2.*dt)
+        if a*b < 0:
+            t = op.bisect(f,0.+dt,2.*dt)
+            break
+        else:
+            dt += 0.05   #intervalo que me muevo para buscar (que tan pequenho (?))
+    R = R_p(t)
+    V = V_pd(t)
+    return [R,V,t,R_s(t),V_s(t)]
 
+#plt.plot(idt,)
+for i in range(50):
+    print Pos_Vel(R , V)
+    R = Pos_Vel(R,V)[0]
+    V = Pos_Vel(R,V)[1]
+    dt = Pos_Vel(R,V)[2]
+    if Pos_Vel(R,V)[1]<Pos_Vel(R,V)[-1]:
+        break
 
 
 
