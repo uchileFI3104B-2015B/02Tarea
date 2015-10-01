@@ -82,7 +82,7 @@ plt.plot(t_values, y_values,color='red', label='pelota')
 plt.plot(t_values, y2_values,color='red', label='pelota')
 plt.axvline(tn[1], color='g')
 plt.axvline(tn[2], color='g')
-
+plt.savefig('choques.png')
 '''----------------------------------------------------------'''
 #estimación Nrelax
 plt.figure(2)
@@ -103,6 +103,8 @@ Nr=600
 n=np.linspace(0,Nr,Nr)
 (tn,yn,vn)=llenar_choques(0,0,v0,Nr)
 plt.plot(n,vn,color='g')
+
+plt.savefig('Nrelax.png')
 '''--------------------------------------------------------------------------'''
 '''Siga usando η=0.15. Haga un gráfico de v'n
 versus ω con ω entre 1.66 y 1.79 y n =2×Nrelax,..., 2×Nrelax + 49,
@@ -134,7 +136,7 @@ for w in linspace(1.67,1.675,10):
     v0_w=vn[n-1]
     w_values=np.ones(len(vn_values))*w
     plt.scatter(w_values,vn_values)
-#fin valores interesantes    
+#fin valores interesantes
 for w in linspace(1.675,1.7,5):
     n=250
     (tn,yn,vn)=llenar_choques(t0_w,y0_w,v0_w,n)
@@ -144,4 +146,6 @@ for w in linspace(1.675,1.7,5):
     v0_w=vn[n-1]
     w_values=np.ones(len(vn_values))*w
     plt.scatter(w_values,vn_values)
+
+plt.savefig('bifurcacion.png')
 show()
