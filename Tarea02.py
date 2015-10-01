@@ -10,6 +10,7 @@ Maximiliano Dirk Vega Aguilera
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy import integrate as Int
+from scipy import optimize as op
 
 #######################################################
 '''
@@ -69,13 +70,15 @@ w = 1.5  #Frecuencia del suelo
 n = 0.3  #coeficiente de restitucion
 m = 1.  #masa
 g = 1.  #aceleracion de gravedad
-V = 1. #Velocidad inicial
+R = 0. #posicion inicial
+V = 7. #Velocidad inicial
 ti = 0  #tiempo inicial
 tf = 10 #tiempo final
 h = 0.001 #paso
 
-dt = np.arange(ti, tf, h) #intervalo de tiempo discreto
+idt = np.arange(ti, tf, h) #intervalo de tiempo discreto
 
+'''
 V_pa= np.zeros(len(dt))  #velocidad antes del choque
 V_pd= np.zeros(len(dt))  #velocidad luego del choque
 R_p= np.zeros(len(dt))  #posicion de la particula
@@ -90,8 +93,36 @@ V_pa[0] = V #velocidad inicial antes del primer impacto (inicial)
 V_pd[0] = (1+n)*fV_s(0) - n*V_pa[0] #velocidad despues del primer impacto (inicial)
 V = V_pd[0] #Velocidad inicial despues del choque
 R_p = lambda x : V*x -(1./2.)*g*(x**2.)
-#R_p = Int.quad(V_pd[0],ti,tf)
-print V_pd[0]
 
-plt.plot(dt,R_p(dt))
-plt.show()
+V_pa = V #velocidad inicial antes del primer impacto (inicial)
+V_pd = (1+n)*fV_s(0) - n*V_pa[0] #velocidad despues del primer impacto (inicial)
+'''
+def Pos_Vel(R,V):
+    R_s = lambda x : A*np.sin(w*x)
+    V_s = lambda x : A*w*np.cos(w*x)
+    R_p = lambda x : R + V*x -(1./2.)*g*(x**2)
+    V_p = lambda x : V - g*x
+    V_pa = lambda x : (1+n)*V_s(x) - n*V
+    V_pd = lambda x : (1+n)*V_s(x) - n*V_pa(x)
+    f = lambda x : R_s(x) - R_p(x)
+    dt = 0.0
+    while True:
+        a = f(dt)
+        b = f(2*dt)
+        if a*b < 0:
+            t = op.bisect(f,a,b)
+            break
+        else:
+            dt += 0.05   #intervalo que me muevo para buscar (que tan pequenho (?))
+    V = V_p(t)
+    R = R_p(t)
+    V = V_pd(t)
+    return [R,V,f(t)]
+
+plt.plot(idt,)
+print Pos_Vel(R , V)
+
+
+
+#plt.plot(dt,R_p(dt))
+#plt.show()
