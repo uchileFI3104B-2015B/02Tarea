@@ -75,35 +75,48 @@ y_values= [y(i) for i in t_values]
 
 y2= lambda t: yn[1]-(t-tn[1])**2/2. + vn[1]*(t-tn[1])
 y2_values= [y2(i) for i in t_values]
-
+plt.title('Posiciones vs tiempo')
+plt.xlabel('tiempo (s)')
+plt.ylabel('Posicion (m)')
+plt.ylim([-10,10])
 plt.plot(t_values, np.sin(w * t_values), label='piso')
-
-plt.plot(t_values, y_values,color='red', label='pelota')
-plt.plot(t_values, y2_values,color='red', label='pelota')
-plt.axvline(tn[1], color='g')
-plt.axvline(tn[2], color='g')
+plt.plot(t_values, y_values,color='red', label='trayectoria inicial')
+plt.plot(t_values, y2_values,color='y', label='trayectoria luego del choque')
+plt.axvline(tn[1], color='g',label='Primer choque')
+plt.axvline(tn[2], color='cyan',label='Segundo choque')
+plt.legend()
 plt.savefig('choques.png')
 '''----------------------------------------------------------'''
 #estimación Nrelax
 plt.figure(2)
+plt.clf()
 plt.subplot(3, 1, 1)
+plt.title ("$V_n'$ vs n")
+plt.xlabel('numero de choques')
+plt.ylabel('velocidad')
 n=np.linspace(0,200,200)
-plt.plot(n,vn)
+plt.plot(n,vn, label='velocidad para $\omega$=1.66')
+plt.legend()
 
 plt.subplot(3, 1, 2)
+plt.xlabel('numero de choques')
+plt.ylabel('velocidad')
 w=1.67
 Nr=600
 n=np.linspace(0,Nr,Nr)
 (tn,yn,vn)=llenar_choques(0,0,v0,Nr)
-plt.plot(n,vn,color='red')
+plt.plot(n,vn,color='red',label='velocidad para $\omega$=1.67')
+plt.legend()
 
 plt.subplot(3, 1, 3)
+plt.xlabel('numero de choques')
+plt.ylabel('velocidad')
 w=1.672
 Nr=600
 n=np.linspace(0,Nr,Nr)
 (tn,yn,vn)=llenar_choques(0,0,v0,Nr)
-plt.plot(n,vn,color='g')
-
+plt.plot(n,vn,color='g',label='velocidad para $\omega$=1.672')
+plt.legend()
 plt.savefig('Nrelax.png')
 '''--------------------------------------------------------------------------'''
 '''Siga usando η=0.15. Haga un gráfico de v'n
@@ -112,6 +125,7 @@ versus ω con ω entre 1.66 y 1.79 y n =2×Nrelax,..., 2×Nrelax + 49,
  Si algún valor de ω le parece interesante, haga la grilla más fina en ese sector.
 '''
 plt.figure(3)
+plt.clf()
 t0_w=0
 y0_w=0
 v0_w=0
@@ -146,6 +160,9 @@ for w in linspace(1.675,1.79,50):
     v0_w=vn[n-1]
     w_values=np.ones(len(vn_values))*w
     plt.scatter(w_values,vn_values)
-
+plt.xlabel('$\omega$ [rad/s]')
+plt.ylabel("$V_n'$ estable [m/s]")
+plt.title("$V_n'$ vs $\omega$")
+plt.legend()
 plt.savefig('bifurcacion.png')
 show()
