@@ -114,6 +114,5 @@ for i in range(reb,reb+reb_peque):
 
 plt.legend()
 plt.draw()
+plt.savefig('fig1.png')
 plt.show()
-
-plt.savefig('fig1.npg')
