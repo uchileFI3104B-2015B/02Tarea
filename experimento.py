@@ -1,6 +1,6 @@
 '''
 Este script desarrolla el experimento de dejar
-la partícula de masa m rebotar sobre el suelo
+la particula de masa m rebotar sobre el suelo
 oscilante, y registra los valores de las
 velocidades de salida de la particula luego de
 cada choque. Se imprime un grafico de las
