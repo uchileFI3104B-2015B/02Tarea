@@ -1,16 +1,3 @@
-'''
-
-Este es un script que busca la interseccion entre un suelo que oscila y una
-pelota que describe una trayectoria gracias a la gravedad, es decir, busca los
-choques o rebotes de la particula en este suelo. Para esto se define una funcion
-que resta ambas ecuaciones de movimiento y se buscan los ceros de esta funcion
-con el comando "brentq". Todo este procedimiento se repite tantas veces como
-choques permitan esta particula y el suelo. El numero de iteraciones queda
-determinado por la velocidad con que sale la particula despues del n-esimo
-choque, ya que si esta es negativa es porque la particula quedo por debajo del
-suelo, lo cual no es posible.
-
-'''
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -28,9 +15,8 @@ n=0.15
 
 #Condiciones iniciales
 y0= 0
-ysuelo=0
 tcero=0
-v0=7 #Este valor se puede ir cambiando para probar cuantos choques hay,
+v0=2   #Este valor se puede ir cambiando para probar cuantos choques hay,
         #que pasa con ciertas velocidades, etc.
 
 #Contadores. i es para contar el numero de choques y raices es para contar el
@@ -41,7 +27,9 @@ tiempos=[]
 ypelota=[]
 vpelotachoque=[]
 
+
 #Intervalos
+
 a=0.1
 b= (v0 + (((v0**2)+2*(1+y0))**0.5) )
 
@@ -65,13 +53,61 @@ def v_pd(t,v,td):
 
 #Diferencia entre posicion del suelo y posicion de la particula
 def ys_menos_yp(t,y,v,td):
-    return  y_s(t,td) - y_p(t,y,v)
+    return y_s(t,td) - y_p(t,y,v)
+'''
+#iteracion
+while True:
+    if v0>1.5:
+        raiz= brentq(ys_menos_yp, a, b, args=(y0,v0,tcero))
+        raices+=raiz
+        print ('Raiz, tiempo de interseccion')
+        print raiz
+        y0=y_p(raiz,y0,v0)
+        print ('Nuevo y0, posicion de la pelota justo despues del choque')
+        print y0
+        #Actualizar valores
+        vs=v_s(raiz,tcero)
+        print ('Velocidad del suelo en la interseccion')
+        print vs
+        vp=v_p(raiz,v0)
+        print ('Velocidad de la pelota justo en la interseccion')
+        print vp
+        v0=(1+n)*vs - n *vp
+        print ('Velocidad pelota despues del choque, nueva v0')
+        print v0
+
+        #Actualizar valores del intervalo
+        a=0.1
+        b= (v0 + (((v0**2)+2*(1+y0))**0.5) )
+        tcero=raiz
+        #print ('Valores de b, intervalos')
+        #print b
+        #print tcero
+        if v0>=0:
+            #Agregar valores a vectores
+            tiempos=np.append(raices)
+            ypelota=np.append(y0)
+            vpelotachoque=np.append(v0)
+        else:
+            break
+
+        i+=1
+    else:
+        break
 
 
+print ('Vector que presenta tiempos en el que sucede cada choque')
+print tiempos
+print ('Vector que presenta la posicion inicial de la pelota luego de cada choque')
+print ypelota
+print ('Vector que presenta la velocidad de la pelota despues de cada choque')
+print vpelotachoque
+
+'''
 plt.clf()
 
 tiempo=np.linspace(0,20,100)
-choques=6
+choques=7
 
 plt.plot(tiempo, y_s(tiempo,tcero), label='suelo',color='r')
 plt.plot(tiempo, y_p(tiempo, y0, v0))
@@ -109,7 +145,6 @@ for i in range(choques):
     print ('Velocidad pelota despues del choque, nueva v0')
     print v0
 
-    
     #Actualizar valores del intervalo
 
     a=0.1
@@ -124,18 +159,9 @@ for i in range(choques):
     tiempos=np.append(tiempos,raices)
     ypelota=np.append(ypelota,y0)
     vpelotachoque=np.append(vpelotachoque,v0)
-    print i
     i+=1
 
 
 plt.legend()
 plt.draw()
 plt.show()
-
-
-print ('Vector que presenta tiempos en el que sucede cada choque')
-print tiempos
-print ('Vector que presenta la posicion inicial de la pelota luego de cada choque')
-print ypelota
-print ('Vector que presenta la velocidad de la pelota despues de cada choque')
-print vpelotachoque

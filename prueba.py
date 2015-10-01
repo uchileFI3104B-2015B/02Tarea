@@ -5,7 +5,7 @@ from scipy.optimize import bisect
 from scipy.optimize import newton
 
 
-t_values= np.linspace(0,20,50)
+t_values= np.linspace(0,20,100)
 m=1
 g=1
 A=1
@@ -38,7 +38,7 @@ def ys_menos_yp(t,y,v,td):
 
 raiz1= brentq(ys_menos_yp, a, b , args=(y0,v0,t0))
 #print raiz1
-plt.axvline(raiz1, color='r')
+#plt.axvline(raiz1, color='r')
 
 vs=v_s(raiz1,t0)
 print vs
@@ -81,14 +81,17 @@ print raiz3
 
 '''
 
-plt.plot(t_values, y_p(t_values,y0,v0), label= 'Posicion pelota')
-plt.plot(t_values, y_s(t_values,0), label= 'Posicion suelo')
+#plt.plot(t_values, y_p(t_values,y0,v0), label= 'Posicion pelota')
+#plt.plot(t_values, y_s(t_values,0), label= 'Posicion suelo')
 #plt.plot(t_values, y_p(t_values,y1,v1), label= 'Posicion pelota 2')
-#plt.plot(t_values, y_p(t_values,y2,v2), label= 'Posicion pelota 3')
+plt.plot(t_values, y_p(t_values,0.410222707732,2.04923864165), label= 'Posicion pelota 3')
 #plt.plot(t_values, y_s(t_values,raiz1))
-#plt.plot(t_values,y_s(t_values,raiz2))
+plt.plot(t_values,y_s(t_values,4.15666133992))
 
+#plt.axvline(5.35963172467, color='g')
+#plt.axvline(0.1, color='b')
 
-
+restacs= ys_menos_yp(0,0.410222707732,2.04923864165,4.15666133992)
+print restacs
 plt.draw()
 plt.show()
