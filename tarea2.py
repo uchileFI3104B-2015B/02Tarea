@@ -115,3 +115,4 @@ for i in range(reb,reb+reb_peque):
 plt.legend()
 plt.draw()
 plt.show()
+plt.savefig()
