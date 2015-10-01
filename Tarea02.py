@@ -110,7 +110,7 @@ def Pos_Vel(R,V):
         a = f(dt)
         b = f(2*dt)
         if a*b < 0:
-            t = op.bisect(f,a,b)
+            t = op.brentq(f,dt,2*dt)
             break
         else:
             dt += 0.05   #intervalo que me muevo para buscar (que tan pequenho (?))
@@ -119,8 +119,12 @@ def Pos_Vel(R,V):
     V = V_pd(t)
     return [R,V,f(t)]
 
-plt.plot(idt,)
-print Pos_Vel(R , V)
+#plt.plot(idt,)
+for i in range(5):
+    print Pos_Vel(R , V)
+    R = Pos_Vel(R,V)[0]
+    V = Pos_Vel(R,V)[1]
+
 
 
 
