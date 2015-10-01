@@ -1,5 +1,14 @@
 '''
-Este script...
+Este script desarrolla el experimento de dejar
+la partícula de masa m rebotar sobre el suelo
+oscilante, y registra los valores de las
+velocidades de salida de la particula luego de
+cada choque. Se imprime un grafico de las
+velocidades de salida para los n suficientemente
+grandes tal que el sistema ya se haya
+estabilizado, para asi estudiar las diferentes
+tipos de movimiento que tiene la particula
+al rebotar sobre el suelo
 '''
 import numpy as np
 import matplotlib.pyplot as plt
