@@ -71,7 +71,7 @@ n = 0.5  #coeficiente de restitucion
 m = 1.  #masa
 g = 1.  #aceleracion de gravedad
 R = 0. #posicion inicial
-V = 500. #Velocidad inicial
+V = 50. #Velocidad inicial
 ti = 0  #tiempo inicial
 tf = 10 #tiempo final
 h = 0.001 #paso
@@ -134,7 +134,7 @@ def Pos_Vel(R,V):
     V_pa = lambda x : (1+n)*V_s(x) - n*V
     V_pd = lambda x : (1+n)*V_s(x) - n*V_pa(x)
     f = lambda x : A*np.sin(w*x) + R + V*x -(1./2.)*g*(x**2)
-    dt = 0.05
+    dt = 0.00
     while True:
         a = f(0.+dt)
         b = f(2.*dt)
@@ -148,15 +148,23 @@ def Pos_Vel(R,V):
     return [R,V,t,R_s(t),V_s(t)]
 
 #plt.plot(idt,)
-for i in range(50):
+#R=5
+#V=120
+#A = 0.  #Amplitud
+#w = 0.  #Frecuencia del suelo
+#n = 1.
+N = 50
+aN = np.arange(1,N+1,1)
+aV= np.zeros(N) #arreglo de velocidad
+for i in range(N):
     print Pos_Vel(R , V)
+    aV[i] = Pos_Vel(R,V)[1]
     R = Pos_Vel(R,V)[0]
     V = Pos_Vel(R,V)[1]
     dt = Pos_Vel(R,V)[2]
-    if Pos_Vel(R,V)[1]<Pos_Vel(R,V)[-1]:
+    if Pos_Vel(R,V)[1]<=Pos_Vel(R,V)[-1]:
         break
 
 
-
-#plt.plot(dt,R_p(dt))
-#plt.show()
+plt.plot(aN,aV,'o')
+plt.show()
