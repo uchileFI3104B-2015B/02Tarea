@@ -5,16 +5,16 @@ from scipy import optimize as opt
 A=1 #fijo
 g=1 #fijo
 m=1 #fijo
-w=1
-rest=0.1 #va de 0 a 1
-n=3 #número de rebotes
+w=1.66
+rest=0.15 #va de 0 a 1
+n=4 #número de rebotes
 
 y=[]; #vector que contendrá las alturas de los choques
 v=[]; #vector que contendrá las velocidades después de los choques
 fase=[]; #vector que contendrá la fase del piso en cada choque
 
 y=np.append(y,0) #cero corresponde a la posición inicial
-v=np.append(v,10) #dos corresponde a la velocidad inicial, se puede cambiar
+v=np.append(v,2) #velocidad inicial, se puede cambiar
 fase=np.append(fase,0) #cero es la fase inicial
 
 def particle(t,y0,v0):
@@ -31,7 +31,7 @@ def velfloor(t,phi):
     return vs
 def collision(t,v0,phi):
     vp_new=(1+rest)*velfloor(t,phi)-rest*velpart(t,v0)
-    return np.fabs(vp_new)
+    return vp_new
 
 for i in range(1,n):
     def resta(t):
@@ -47,10 +47,14 @@ for i in range(1,n):
     v=np.append(v,v_new)
     fase=np.append(fase,fase_new)
 
-#t=np.linspace(0,10,1000)
-#plt.figure()
-#plt.clf()
-#plt.plot(t,floor(t,fase[4]),'r',t,particle(t,y[4],v[4]))
-#plt.show()
+t=np.arange(0,n,1)
+plt.figure()
+plt.clf()
+plt.plot(t,v)
+plt.xlabel('Numero de rebotes')
+plt.ylabel('Velocidad despues del rebote')
+plt.show()
+
+print(t)
 print(y)
 print(v)
