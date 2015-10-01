@@ -72,7 +72,8 @@ y = 0.
 v = 4.
 phi = 0.
 t_col = 0
-Ncol = 100
+Ncol = 150
+n_values = range(0,Ncol,1)
 t_values = np.empty(0)
 y_values = np.empty(0)
 v_values = np.empty(0)
@@ -97,9 +98,14 @@ for i in range(1,Ncol,1):
 ysuelo_values = y_suelo(t_values,0)
 vsuelo_values = v_suelo(t_values,0)
 
-tiempo = np.linspace(0,t_values[len(t_values)-1],1000)
-y_sue = y_suelo(tiempo,0)
-plt.plot(tiempo,y_sue)
 
-plt.plot(t_values, y_values, marker='+', color='r')
+
+plt.plot(n_values, v_values, marker='+', color='r')
 plt.show()
+
+fig = plt.figure(1, figsize=(6, 4))
+ax = fig.add_subplot(111)
+ax.set_title('Velocidad de rebote')
+
+ax.set_xlabel('N de colision')
+ax.set_ylabel('Velocidad')
