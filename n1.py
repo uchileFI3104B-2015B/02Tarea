@@ -47,7 +47,7 @@ w=1.66
 yn=0.1921
 vn=2.1586
 tn=3.9015
-'''
+
 yn=0.53700736
 vn=1.89096881
 tn=185.80901541
@@ -56,7 +56,7 @@ yn=0
 vn=2
 tn=0
 
-'''
+
 ys= lambda x: A*np.sin(w*(x))
 yp= lambda x: (((1/2.)*g*(x-tn)**2)+vn*(x-tn)+yn)
 y= lambda x: yp(x)-ys(x)
@@ -76,7 +76,7 @@ plt.clf()
 plt.plot(t,ys(t),'g')
 plt.plot(t,yp(t),'r')
 plt.axvline(zzz)
-#plt.axvline(a)
+plt.axvline(a)
 plt.axvline(tn)
 
 print z

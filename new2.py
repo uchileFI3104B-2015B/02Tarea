@@ -14,7 +14,7 @@ def choque(vn,yn):
     ys= lambda x: A*np.sin(w*x)
     yp= lambda x: (((1/2.)*g*x**2)+vn*x+yn)
     y= lambda x: yp(x)-ys(x)
-    vs= lambda x: A*np.cos(w*x)
+    vs= lambda x: A*w*np.cos(w*x)
     vp= lambda x: (g*x+vn)
     a=-vn/g
     b=(-vn-(vn**2-2*g*(yn+A))**(0.5))/g
