@@ -13,158 +13,63 @@ from scipy import integrate as Int
 from scipy import optimize as op
 
 #######################################################
-'''
-#R = lambda x : A*sin(w*x) + A*cos(w*x)
 
-
-
-
-vprima_p = 0. #velocidad justo despues del choque
-v_p = 0. #velocidad justo antes del choque
-v_s = 0. #velocidad del suelo
-
-A = 1.  #Amplitud
-w = 1.5  #Frecuencia del suelo
-n = 0.5  #coeficiente de restitucion
-m = 1.  #masa
-g = 1.
-
-
-R_s = lambda x : A*np.sin(w*x) #Posicion del suelo
-V_s = lambda x : A*w*np.cos(w*x) #Velocidad del suelo
-R_p = lambda x,y : y*x     #Posicion de la particula x Velocidad, y tiempo
-V_p = lambda x : x     #Velocidad de la particula antes del impacto
-V_p1 = lambda x, h : (1+n)*V_s(x) - n*V_p(x-h) #Velocidad de la particula despues del impacto
-
-y0 = 0 #pegado al suelo
-v0 = 0 #velocidad inicial
-h = 0.001 #paso dt
-tf = 10 #tiempo final
-
-dt = np.arange(0, tf, h) #intervalo de tiempo discreto
-
-
-V1 = np.zeros(len(dt))  #velocidad luego del choque
-V1[0] = 2.
-for i in range(len(dt)):
-    V1[i] = V_p1(dt[i],h*i)
-
-plt.plot(dt,R_p(V1,dt))
-plt.show()
-
-'''
-''''
-ver que como implementar correctamente:
-tengo la posicion y la velocidad del suelo
-la posicion inicial de la particula
-debo darme una velocidad inicial
-calcular la velocidad' de la relacion con el suelo y eta
-ver como calcular la posicion de la particula (integrar?)
-intersectar la posicion de la particula con la del suelo
-usar ese tiempo y repetir n veces
-buena suerte D:
-'''
-
-A = 1.  #Amplitud
-w = 1.62  #Frecuencia del suelo
-n = 0.5  #coeficiente de restitucion
-m = 1.  #masa
-g = 9.  #aceleracion de gravedad
-R = 0. #posicion inicial
-V = 50. #Velocidad inicial
-ti = 0  #tiempo inicial
-tf = 10 #tiempo final
-h = 0.001 #paso
+A = 1.     #Amplitud
+w = 1.66   #Frecuencia del suelo
+n = 0.15    #Coeficiente de restitucion
+m = 1.     #Masa
+g = 9.     #Aceleracion de gravedad
+R = 0.     #Posicion inicial
+V = 50.    #Velocidad inicial
+ti = 0     #Tiempo inicial
+tf = 10    #Tiempo final
+h = 0.001  #Paso
 
 idt = np.arange(ti, tf, h) #intervalo de tiempo discreto
 
-'''
-V_pa= np.zeros(len(dt))  #velocidad antes del choque
-V_pd= np.zeros(len(dt))  #velocidad luego del choque
-R_p= np.zeros(len(dt))  #posicion de la particula
-V_p= np.zeros(len(dt))  #velocidad de la particula
-
-fR_s = lambda x : A*np.sin(w*x) #Posicion del suelo, x variable tiempo
-fV_s = lambda x : A*w*np.cos(w*x) #Velocidad del suelo, x variable tiempo
-fR_p = lambda x: V*x -(1/2)*g*(x**2) #posion de la particula,x tiempo, Vel despues del impacto
-fV_p1 = lambda x, h : (1+n)*V_s(x) - n*V_p(x-h) #Velocidad de la particula despues del impacto
-
-V_pa[0] = V #velocidad inicial antes del primer impacto (inicial)
-V_pd[0] = (1+n)*fV_s(0) - n*V_pa[0] #velocidad despues del primer impacto (inicial)
-V = V_pd[0] #Velocidad inicial despues del choque
-R_p = lambda x : V*x -(1./2.)*g*(x**2.)
-
-V_pa = V #velocidad inicial antes del primer impacto (inicial)
-V_pd = (1+n)*fV_s(0) - n*V_pa[0] #velocidad despues del primer impacto (inicial)
-
 def Pos_Vel(R,V):
-    R_s = lambda x : A*np.sin(w*x)
-    V_s = lambda x : A*w*np.cos(w*x)
-    R_p = lambda x : R + V*x -(1./2.)*g*(x**2)
-    V_p = lambda x : V - g*x
-    V_pa = lambda x : (1+n)*V_s(x) - n*V
-    V_pd = lambda x : (1+n)*V_s(x) - n*V_pa(x)
-    f = lambda x : R_s(x) - R_p(x)
-    dt = 0.0
-    while True:
-        a = f(dt)
-        b = f(2*dt)
-        if a*b < 0:
-            t = op.brentq(f,dt,2*dt)
-            break
-        else:
-            dt += 0.05   #intervalo que me muevo para buscar (que tan pequenho (?))
-    V = V_p(t)
-    R = R_p(t)
-    V = V_pd(t)
-    return [R,V,f(t)]
-
-#plt.plot(idt,)
-for i in range(5):
-    print Pos_Vel(R , V)
-    R = Pos_Vel(R,V)[0]
-    V = Pos_Vel(R,V)[1]
-'''
-dt=0.0
-def Pos_Vel(R,V):
-    R_s = lambda x : A*np.sin(w*x+np.arcsin(R))
-    V_s = lambda x : A*w*np.cos(w*x+np.arcsin(R))
-    R_p = lambda x : R + V*x -(1./2.)*g*(x**2)
-    V_p = lambda x : V - g*x
-    V_pa = lambda x : (1+n)*V_s(x) - n*V
-    V_pd = lambda x : (1+n)*V_s(x) - n*V_pa(x)
+    '''
+    Funcion que entrega la posicion y velocidad de la particula despues del
+    choque dados el choque anterior.
+    Se definen las funciones a usar y se calcula el punto en el que el suelo
+    esta en contacto con la particula utilizando el metodo de la biseccion
+    para una funcion auxiliar.
+    '''
+    R_s = lambda x : A*np.sin(w*x+np.arcsin(R))     #Posicion del suelo
+    V_s = lambda x : A*w*np.cos(w*x+np.arcsin(R))   #Velocidad del suelo
+    R_p = lambda x : R + V*x -(1./2.)*g*(x**2)      #Posicion de la particula
+    V_p = lambda x : V - g*x                        #Velocidad de la particula
+    V_pa = lambda x : (1+n)*V_s(x) - n*V            #Vel antes del choque
+    V_pd = lambda x : (1+n)*V_s(x) - n*V_pa(x)      #Vel despues del choque
     f = lambda x : A*np.sin(w*x+np.arcsin(R)) + R + V*x -(1./2.)*g*(x**2)
     dt = 0.00
-    while True:
+    while True:          #Busca el cero de f
         a = f(0.+dt)
         b = f(2.*dt)
-        if a*b < 0:
+        if a*b < 0:      #Moviendose en dt busca cuando pasa el 0
             t = op.bisect(f,0.+dt,2.*dt)
             break
         else:
-            dt += 0.05   #intervalo que me muevo para buscar (que tan pequenho (?))
-    R = -R_p(t)
-    V = V_pd(t)
+            dt += 0.005  #Intervalo que me muevo para buscar cero
+    R = -R_p(t)          #Entrega posicion de la particula despues del choque
+    V = V_pd(t)          #Entrega velocidad de la particula despues del choque
     return [R,V,t,R_s(t),V_s(t)]
 
-#plt.plot(idt,)
-#R=5
-#V=120
-#A = 0.  #Amplitud
-#w = 0.  #Frecuencia del suelo
-#n = 1.
-N = 50
-aN = np.arange(1,N+1,1)
-aV= np.zeros(N) #arreglo de velocidad
-for i in range(N):
-    print Pos_Vel(R , V)
+w = 1.7                #Variar w para la parte 3
+N = 50                   #Numero de choques a encontrar
+aN = np.arange(1,N+1,1)  #Arreglo del numero de choques
+aV= np.zeros(N)          #Arreglo de velocidad despues del choque
+for i in range(N):       #Asigna los valores a los arreglos
+    print Pos_Vel(R , V) #Muestra los datos obtenidos para verificar en el proceso
     aV[i] = Pos_Vel(R,V)[1]
     R = Pos_Vel(R,V)[0]
     V = Pos_Vel(R,V)[1]
     dt = Pos_Vel(R,V)[2]
-    #if Pos_Vel(R,V)[1]<=Pos_Vel(R,V)[-1]:
-    #    break
 
 
-plt.plot(aN,aV)
+plt.plot(aN,aV,'o-',label=('$w$ =',w))
+plt.title('Velocidad de la particula despues del n-esimo choque')
+plt.xlabel('$N^o$ de choques')
+plt.ylabel('Velocidad de la particula')
+plt.legend()
 plt.show()
