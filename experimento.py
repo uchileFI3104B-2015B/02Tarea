@@ -25,13 +25,13 @@ i=0 #contador de w
 plt.figure(1)
 while i<len(w):
     n=0 #contador de botes
-    while n<100:
+    while n<150:
         out=outnchoque(y,v,w[i],s,eta)
         y=out[0] #posicion del choque
         v=out[1] #v' despues del choque
         s=out[2] #signo de v_s despues del choque
         n+=1
-        if n>50:
+        if n>100:
             plt.plot(w[i],v,'bo')
     i+=1
 plt.xlabel('Frecuencia angular $\omega$')
