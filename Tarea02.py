@@ -15,7 +15,7 @@ from scipy import optimize as op
 #######################################################
 
 A = 1.     #Amplitud
-w = 1.70   #Frecuencia del suelo
+w = 1.68   #Frecuencia del suelo
 n = 0.15   #Coeficiente de restitucion
 m = 1.     #Masa
 g = 9.     #Aceleracion de gravedad
@@ -56,7 +56,7 @@ def Pos_Vel(R,V):
     V = V_pd(t)          #Entrega velocidad de la particula despues del choque
     return [R,V,t,R_s(t),V_s(t)]
 
-N = 50                  #Numero de choques a encontrar
+N = 100                  #Numero de choques a encontrar
 aN = np.arange(1,N+1,1)  #Arreglo del numero de choques
 aV= np.zeros(N)          #Arreglo de velocidad despues del choque
 for i in range(N):       #Asigna los valores a los arreglos
