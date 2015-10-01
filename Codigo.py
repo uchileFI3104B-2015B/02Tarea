@@ -20,7 +20,7 @@ def y_suelo(t, phi):
     return A*np.sin(w*t + phi)
 
 def v_suelo(t, phi):
-    return A*np.cos(w*t + phi)
+    return A*w*np.cos(w*t + phi)
 
 def get_y(t,yo,vo):
     y = -(0.5)*g*t**2 + vo*t + yo
@@ -41,7 +41,7 @@ def get_tcol(yo,vo,phi):
     sus condiciones iniciales
     '''
     N = 1000
-    tf = 2*w
+    tf = 10*w
     t_values = np.linspace(0, tf, N)
     i = 1
     while h_abs(t_values[i],yo,vo,phi)*h_abs(t_values[i+1],yo,vo,phi) >= 0:
@@ -49,8 +49,6 @@ def get_tcol(yo,vo,phi):
         if i >= N-2:
             break
     t_col = t_values[i]
-    t1 = t_values[i]
-    t2 = t_values[i+1]
     t_col = sc.newton(h_abs, t_col ,args=(yo,vo,phi),maxiter = 100)
     return t_col
 
@@ -64,14 +62,14 @@ def col(yo,vo,phi):
     v_col = get_v(t_col,vo)
     v_new = (1. + eta)*v_suelo(t_col,phi) - eta*v_col
     #if y_col <= y_suelo(t_col,phi) and v_new < v_suelo(t_col,phi):
-        #y_col = y_suelo(t_col,phi)
+        #y_col = y_suelo(t_col,phi)vu
         #v_new = v_suelo(t_col,phi)
     phi_col = w*t_col + phi
     return y_col, v_new, phi_col
 
 tol = 1.0e-8 #Tolerancia de velocidad para decidir si la pelota se acopla al suelo
 y = 0.
-v = 2.
+v = 4.
 phi = 0.
 t_col = 0
 Ncol = 100
@@ -99,7 +97,9 @@ for i in range(1,Ncol,1):
 ysuelo_values = y_suelo(t_values,0)
 vsuelo_values = v_suelo(t_values,0)
 
-#plt.axvline(t_col, color = 'g')
-plt.plot(t_values, ysuelo_values)
-plt.plot(t_values, y_values, marker='+', color = 'r')
+tiempo = np.linspace(0,t_values[len(t_values)-1],1000)
+y_sue = y_suelo(tiempo,0)
+plt.plot(tiempo,y_sue)
+
+plt.plot(t_values, y_values, marker='+', color='r')
 plt.show()
