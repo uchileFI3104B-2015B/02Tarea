@@ -143,7 +143,7 @@ def Pos_Vel(R,V):
             break
         else:
             dt += 0.05   #intervalo que me muevo para buscar (que tan pequenho (?))
-    R = R_p(t)
+    R = -R_p(t)
     V = V_pd(t)
     return [R,V,t,R_s(t),V_s(t)]
 
@@ -162,8 +162,8 @@ for i in range(N):
     R = Pos_Vel(R,V)[0]
     V = Pos_Vel(R,V)[1]
     dt = Pos_Vel(R,V)[2]
-    if Pos_Vel(R,V)[1]<=Pos_Vel(R,V)[-1]:
-        break
+    #if Pos_Vel(R,V)[1]<=Pos_Vel(R,V)[-1]:
+    #    break
 
 
 plt.plot(aN,aV,'o')
