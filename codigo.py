@@ -30,7 +30,7 @@ n=0.15
 y0= 0
 ysuelo=0
 tcero=0
-v0=7 #Este valor se puede ir cambiando para probar cuantos choques hay,
+v0=5 #Este valor se puede ir cambiando para probar cuantos choques hay,
         #que pasa con ciertas velocidades, etc.
 
 #Contadores. i es para contar el numero de choques y raices es para contar el
@@ -71,7 +71,7 @@ def ys_menos_yp(t,y,v,td):
 plt.clf()
 
 tiempo=np.linspace(0,20,100)
-choques=6
+choques=3
 
 plt.plot(tiempo, y_s(tiempo,tcero), label='suelo',color='r')
 plt.plot(tiempo, y_p(tiempo, y0, v0))
@@ -86,11 +86,7 @@ for i in range(choques):
     print raiz
 
     t_values=np.linspace(0, raices,100)
-    #posicion_p=y_p(y0,v0,t_values)
-    #if vel_s(w,yo,raices[i,2])<0:
-    #    w=-abs(w)
-    #else:
-    #    w=abs(w)
+
 
     plt.plot(t_values+raices, y_p(tiempo,y0,v0) , color='b')
     plt.axvline(raices,color='y')
@@ -109,21 +105,16 @@ for i in range(choques):
     print ('Velocidad pelota despues del choque, nueva v0')
     print v0
 
-    
     #Actualizar valores del intervalo
-
     a=0.1
     b= (v0 + (((v0**2)+2*(1+y0))**0.5) )
-
     tcero=raiz
-    print ('Valores de b, intervalos')
-    print b
-    print tcero
 
     #Agregar valores a vectores
     tiempos=np.append(tiempos,raices)
     ypelota=np.append(ypelota,y0)
     vpelotachoque=np.append(vpelotachoque,v0)
+    print ('Numero de choque (primer choque = 0 y asi en adelante)')
     print i
     i+=1
 
