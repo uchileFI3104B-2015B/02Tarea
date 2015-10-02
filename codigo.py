@@ -4,11 +4,8 @@ Este es un script que busca la interseccion entre un suelo que oscila y una
 pelota que describe una trayectoria gracias a la gravedad, es decir, busca los
 choques o rebotes de la particula en este suelo. Para esto se define una funcion
 que resta ambas ecuaciones de movimiento y se buscan los ceros de esta funcion
-con el comando "brentq". Todo este procedimiento se repite tantas veces como
-choques permitan esta particula y el suelo. El numero de iteraciones queda
-determinado por la velocidad con que sale la particula despues del n-esimo
-choque, ya que si esta es negativa es porque la particula quedo por debajo del
-suelo, lo cual no es posible.
+con el comando "brentq". Todo este procedimiento se repite tantas veces,
+definiendo el numero de choques que queramos. 
 
 '''
 
@@ -67,14 +64,14 @@ def v_pd(t,v,td):
 def ys_menos_yp(t,y,v,td):
     return  y_s(t,td) - y_p(t,y,v)
 
-
+#Graficar los saltos y las raices
 plt.clf()
-
 tiempo=np.linspace(0,20,100)
-choques=3
-
 plt.plot(tiempo, y_s(tiempo,tcero), label='suelo',color='r')
 plt.plot(tiempo, y_p(tiempo, y0, v0))
+
+#Definir numero de choques
+choques=3
 
 for i in range(choques):
     resta=ys_menos_yp(0,y0,v0,tcero)
@@ -85,16 +82,15 @@ for i in range(choques):
     print ('Raiz, tiempo de interseccion')
     print raiz
 
+
     t_values=np.linspace(0, raices,100)
-
-
     plt.plot(t_values+raices, y_p(tiempo,y0,v0) , color='b')
     plt.axvline(raices,color='y')
 
+    #Actualizar valores
     y0=y_p(raiz,y0,v0)
     print ('Nuevo y0, posicion de la pelota justo despues del choque')
     print y0
-    #Actualizar valores
     vs=v_s(raiz,tcero)
     print ('Velocidad del suelo en la interseccion')
     print vs
