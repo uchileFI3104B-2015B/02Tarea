@@ -115,7 +115,7 @@ plt.xlabel('Numero de rebotes')
 plt.ylabel('Velocidad particula justo despues del rebote')
 plt.legend()
 plt.grid(True)
-plt.savefig('Grafico_v0_2.eps')
+plt.savefig('Grafico_v0_70.eps')
 
 #-------------------------------------
 
@@ -135,7 +135,7 @@ plt.plot(Nrelax170[0], Nrelax170[1], label='$\omega=1.70$', color='red')
 plt.legend()
 plt.grid(True)
 
-plt.savefig("Grafico_subplots_v0_2.eps")
+plt.savefig("Grafico_subplots_v0_70.eps")
 
 #---------------------------------------
 
@@ -154,7 +154,7 @@ for omega in np.linspace(1.66, 1.7, 5):
 plt.xlabel('$\omega$')
 plt.ylabel('Velocidad particula justo despues del rebote')
 plt.grid(True)
-plt.savefig("Grafico_p4_v0_2.eps")
+plt.savefig("Grafico_p4_v0_70.eps")
 
 
 plt.show()
