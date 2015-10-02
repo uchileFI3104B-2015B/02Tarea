@@ -1,3 +1,6 @@
+'''
+Este Script
+'''
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.optimize import brentq
@@ -9,8 +12,8 @@ from scipy import optimize as opt
 m=1
 g=1
 A=1
-w=1.66
-n=0.15
+w=2
+n=0.5
 
 #Definimos los parametros iniciales
 y0= 0
@@ -49,7 +52,7 @@ def ys_menos_yp(t,y,v,dt):
 
 #Contadores:
 i=0                    #Contador de rebotes
-rebotes=10             #Rebotes que queremos observar
+rebotes=15             #Rebotes que queremos observar
 raices=0               #t en el cual ocurre la intersección
 tiempos=[]             #vector que ira guardando los valores de las raices
 yparticula=[]          #vector posicion de la particula
@@ -83,7 +86,7 @@ for i in range(rebotes):
     a=0.1
     b= (v0 + (((v0**2)+2*(1+y0))**0.5) )
 
-    tcero=raiz
+    tcero+=raiz
     print ('Valores de b, intervalos')
     print b
     print tcero
@@ -96,14 +99,11 @@ for i in range(rebotes):
     i+=1
 
 
-plt.legend()
-plt.draw()
-plt.show()
 
 
 print ('Vector que presenta tiempos en el que sucede cada choque')
 print tiempos
 print ('Vector que presenta la posicion inicial de la pelota luego de cada choque')
-print ypelota
+print yparticula
 print ('Vector que presenta la velocidad de la pelota despues de cada choque')
-print vpelotachoque
+print vparticulachoque
