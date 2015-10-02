@@ -9,7 +9,6 @@ Maximiliano Dirk Vega Aguilera
 
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy import integrate as Int
 from scipy import optimize as op
 
 #######################################################
@@ -21,11 +20,6 @@ m = 1.     #Masa
 g = 9.     #Aceleracion de gravedad
 R = 0.     #Posicion inicial
 V = 50.    #Velocidad inicial
-ti = 0     #Tiempo inicial
-tf = 10    #Tiempo final
-h = 0.001  #Paso
-
-idt = np.arange(ti, tf, h) #intervalo de tiempo discreto
 
 def Pos_Vel(R,V):
     '''
@@ -54,17 +48,16 @@ def Pos_Vel(R,V):
             dt += 0.005  #Intervalo que me muevo para buscar cero
     R = -R_p(t)          #Entrega posicion de la particula despues del choque
     V = V_pd(t)          #Entrega velocidad de la particula despues del choque
-    return [R,V,t,R_s(t),V_s(t)]
+    return [R,V]
 
 N = 100                  #Numero de choques a encontrar
 aN = np.arange(1,N+1,1)  #Arreglo del numero de choques
 aV= np.zeros(N)          #Arreglo de velocidad despues del choque
 for i in range(N):       #Asigna los valores a los arreglos
-    print Pos_Vel(R , V) #Muestra los datos obtenidos para verificar en el proceso
+    print i,Pos_Vel(R , V) #Muestra los datos obtenidos para verificar en el proceso
     aV[i] = Pos_Vel(R,V)[1]
     R = Pos_Vel(R,V)[0]
     V = Pos_Vel(R,V)[1]
-    dt = Pos_Vel(R,V)[2]
 
 
 plt.plot(aN,aV,'o-',label=('$w$ =',w))
