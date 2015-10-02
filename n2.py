@@ -2,6 +2,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy import optimize as opt
 
+'''
+perimte obtener el n de relajacion mediante la sucecion de choques que se
+estiman segun las condiciones iniciales dadas
+'''
+
 def choque(vn,yn,tn):
     A=1
     g=-1
@@ -35,6 +40,10 @@ def choque(vn,yn,tn):
     return v,p,t
 
 '''
+debido a que habia que mejorar partes de la funcion, se opta por dejar la
+funcion en los comentarios en el momento en que aun funcionaba para poder usarla
+en caso de que algo saliera mal
+
 def choque(vn,yn,tn):
     A=1
     g=-1
@@ -72,8 +81,10 @@ def choque(vn,yn,tn):
 
 plt.figure(1)
 plt.clf()
-
-N=200
+#esta iteracion permite obtener un vector con las velocidades de cada iteracion
+#para poder graficar. tambien guarda posiciones y tiempos para poder observar si
+#funcionaba como se queria
+N=200 #se verifica con este numero que el n de relax esta mucho antes
 v=[]
 y=[]
 t=[]
@@ -101,7 +112,9 @@ while i <= N:
     n=np.append(n,i)
 
 '''
-para graficar el n de relajo para varios valores de v0
+para graficar el n de relajo para varios valores de v0. metodo inconcluso e
+innecesario, ya que no se buscaba variar la velocidad inicial. no deberia afectar
+los resultados el valor que tome en un comienzo
 v0_n=(2, 5, 10, 20, 30, 40)
 k=1
 for v0 in v0_n:

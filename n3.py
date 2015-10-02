@@ -1,7 +1,14 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy import optimize as opt
+'''
+Permite obtener las velocidades estables para distintos valores de frecuenca.
+Luego grafica las velocidades con respecto a omega (w)
+'''
 
+
+#la funcion tiene algunos cambios para que reciba de parametro la Frecuencia
+#resulta mas facil el calculo siguiente de esta manera
 def choque(vn,yn,tn,wi):
     A=1
     g=-1
@@ -38,6 +45,10 @@ def choque(vn,yn,tn,wi):
 
 plt.figure(1)
 plt.clf()
+
+#esta parte obtiene las velocidades para distnitnos valores de frecuenca y
+#guarda los valores para graficarlo. Es bastante poco prolijo. se puede mejorar
+#usando otras funciones para hacer un arreglo de "n" o de omega. queda pendiente
 
 for wi in np.linspace(1.66,1.79,20):
     (wf,vf)=([],[])
