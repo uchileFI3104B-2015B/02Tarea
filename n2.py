@@ -25,7 +25,6 @@ def choque(vn,yn,tn):
         else:
             t=opt.bisect(y,a,b)
         v=(1+n)*vs(t)-n*vp(t)
-#        yd=ys(t)
     else:
         c=tn
         d=tn+np.pi/w
@@ -132,7 +131,9 @@ for v0 in v0_n:
 '''
 
 
-plt.plot(n,v,'g')
+plt.plot(n,v,'.')
+plt.xlabel('N de Choque')
+plt.ylabel('Velocidad producto del choque')
 plt.draw()
 plt.show()
 print v
