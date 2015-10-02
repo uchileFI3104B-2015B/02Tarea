@@ -55,7 +55,7 @@ n=np.arange(70)
 plt.subplot(3,1,1)
 plt.ylabel('$v_n$', fontsize=25)
 plt.xlabel('cantidad de rebotes')
-plt.plot(n,vn,label='$w_1=1.66$',color='g')
+plt.plot(n,vn,label='$\omega_1=1.66$',color='g')
 plt.legend()
 plt.title('$N_{relax}$ para $w_1=1.66, w_2=1.685, w_3=1.7$', fontsize=18)
 
@@ -65,7 +65,7 @@ n=np.arange(10)
 plt.subplot(3,1,2)
 plt.ylabel('$v_n$', fontsize=25)
 plt.xlabel('cantidad de rebotes')
-plt.plot(n,vn,label='$w_2=1.685$', color='r')
+plt.plot(n,vn,label='$\omega_2=1.685$', color='r')
 plt.legend()
 
 w=1.7
@@ -74,7 +74,7 @@ n=np.arange(10)
 plt.subplot(3,1,3)
 plt.ylabel('$v_n$', fontsize=25)
 plt.xlabel('cantidad de rebotes')
-plt.plot(n,vn,label='$w_3=1.7$')
+plt.plot(n,vn,label='$\omega_3=1.7$')
 plt.legend()
 
 plt.draw()
@@ -98,6 +98,8 @@ for w in np.linspace(1.66,1.776,30):
 
 
 plt.xlim(1.65,1.8)
+plt.xlabel('Frecuencia $\omega$ del suelo')
+plt.ylabel('Velocidad de la particula en regimen estable')
 plt.draw()
 plt.show()
 plt.savefig('figura2.png')
