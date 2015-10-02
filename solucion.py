@@ -5,16 +5,17 @@ from scipy import optimize as opt
 A=1 #fijo
 g=1 #fijo
 m=1 #fijo
-w=1.66
+w=1.67
 rest=0.15 #va de 0 a 1
-n=4 #número de rebotes
+n=60 #número de rebotes
+eps=0.1
 
 y=[]; #vector que contendrá las alturas de los choques
 v=[]; #vector que contendrá las velocidades después de los choques
 fase=[]; #vector que contendrá la fase del piso en cada choque
 
 y=np.append(y,0) #cero corresponde a la posición inicial
-v=np.append(v,2) #velocidad inicial, se puede cambiar
+v=np.append(v,60) #velocidad inicial, se puede cambiar
 fase=np.append(fase,0) #cero es la fase inicial
 
 def particle(t,y0,v0):
@@ -38,7 +39,10 @@ for i in range(1,n):
         r=particle(t,y[i-1],v[i-1])-floor(t,fase[i-1])
         return r
     inf=v[i-1]/g
-    sup=(v[i-1]-np.sqrt(v[i-1]**2+2*g*(A+y[i-1])))/g
+    sup=(v[i-1]+np.sqrt(v[i-1]**2+2*g*(A+y[i-1])))/g
+    while resta(inf)*resta(sup)>0: #cuando los puntos no están a lados contrarios del cero
+        inf=inf-eps
+        sup=sup+eps
     zero=opt.bisect(resta,inf,sup)
     y_new=particle(zero,y[i-1],v[i-1])
     v_new=collision(zero,v[i-1],fase[i-1])
@@ -47,14 +51,15 @@ for i in range(1,n):
     v=np.append(v,v_new)
     fase=np.append(fase,fase_new)
 
-t=np.arange(0,n,1)
-plt.figure()
-plt.clf()
-plt.plot(t,v)
-plt.xlabel('Numero de rebotes')
-plt.ylabel('Velocidad despues del rebote')
-plt.show()
-
-print(t)
 print(y)
 print(v)
+
+t=np.arange(10,n,1)
+vplot=v[10:]
+plt.figure()
+plt.clf()
+plt.plot(t,vplot,'bs')
+plt.xlabel('Numero de rebotes')
+plt.ylabel('Velocidad')
+plt.savefig('grafico.png')
+plt.show()
