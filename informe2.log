@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  1 OCT 2015 21:54
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  1 OCT 2015 22:19
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -291,9 +291,6 @@ LaTeX Info: Redefining \. on input line 8.
 LaTeX Info: Redefining \% on input line 8.
 \openout3 = `informe2Notes.bib'.
 
-Missing character: There is no é in font cmr9!
-Missing character: There is no ú in font cmr9!
-Missing character: There is no ó in font cmr9!
 LaTeX Font Info:    Try loading font information for U+msa on input line 15.
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/amsfonts/umsa.fd
@@ -304,92 +301,29 @@ LaTeX Font Info:    Try loading font information for U+msb on input line 15.
 (/usr/local/texlive/2015/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-Missing character: There is no á in font cmr9!
-Missing character: There is no ó in font cmr9!
-Missing character: There is no á in font cmr9!
-Missing character: There is no é in font cmbx12!
-Missing character: There is no ú in font cmbx12!
-Missing character: There is no ú in font cmr10!
-Missing character: There is no ó in font cmr10!
-Missing character: There is no ó in font cmr10!
-Missing character: There is no ó in font cmr10!
-Missing character: There is no ó in font cmr10!
-Missing character: There is no ó in font cmr10!
-Missing character: There is no á in font cmr10!
-Missing character: There is no é in font cmr10!
-Missing character: There is no é in font cmr10!
-Missing character: There is no ó in font cmr10!
-Missing character: There is no ó in font cmr10!
-Missing character: There is no í in font cmr10!
-Missing character: There is no á in font cmr10!
-Missing character: There is no ó in font cmr10!
-Missing character: There is no á in font cmr10!
-Missing character: There is no ó in font cmr10!
-Missing character: There is no í in font cmr10!
-Missing character: There is no ó in font cmr10!
-Missing character: There is no ó in font cmr10!
-Missing character: There is no ó in font cmr10!
-Missing character: There is no ó in font cmr10!
-Missing character: There is no í in font cmr10!
-Missing character: There is no ó in font cmr10!
-Missing character: There is no ó in font cmr10!
-Missing character: There is no é in font cmr10!
-Missing character: There is no ó in font cmr10!
-Missing character: There is no ó in font cmr10!
-Missing character: There is no í in font cmr10!
-Missing character: There is no ó in font cmr10!
-
 <figure_1.png, id=1, 578.16pt x 433.62pt>
 File: figure_1.png Graphic file (type png)
  <use figure_1.png>
 Package pdftex.def Info: figure_1.png used on input line 55.
 (pdftex.def)             Requested size: 227.62204pt x 170.71231pt.
-Missing character: There is no ó in font cmr9!
-Missing character: There is no ó in font cmr9!
-Missing character: There is no ó in font cmr9!
-Missing character: There is no ó in font cmr9!
-Missing character: There is no ú in font cmr10!
-Missing character: There is no ú in font cmr10!
 
 <figure_2.png, id=3, 578.16pt x 433.62pt>
 File: figure_2.png Graphic file (type png)
  <use figure_2.png>
 Package pdftex.def Info: figure_2.png used on input line 67.
 (pdftex.def)             Requested size: 227.62204pt x 170.71231pt.
-Missing character: There is no ó in font cmr9!
-Missing character: There is no ú in font cmr9!
-Missing character: There is no ó in font cmr9!
-Missing character: There is no ú in font cmr9!
 
 <figure_3.png, id=4, 578.16pt x 433.62pt>
 File: figure_3.png Graphic file (type png)
  <use figure_3.png>
 Package pdftex.def Info: figure_3.png used on input line 75.
 (pdftex.def)             Requested size: 227.62204pt x 170.71231pt.
-Missing character: There is no ó in font cmr9!
-Missing character: There is no ú in font cmr9!
-Missing character: There is no ó in font cmr9!
-Missing character: There is no ú in font cmr9!
  [1{/usr/local/texlive/2015/texmf-var/fonts/map/pdftex/updmap/pdftex.map} <./fi
 gure_1.png>]
 
 LaTeX Warning: A float is stuck (cannot be placed); try class option [floatfix]
  on input line 81.
 
-Missing character: There is no é in font cmr10!
-Missing character: There is no ó in font cmr10!
-Missing character: There is no á in font cmr10!
-Missing character: There is no ó in font cmr10!
-Missing character: There is no á in font cmr10!
-Missing character: There is no ó in font cmr10!
-Missing character: There is no í in font cmr10!
-Missing character: There is no é in font cmr10!
-Missing character: There is no á in font cmr10!
-Missing character: There is no í in font cmr10!
-Missing character: There is no ó in font cmr10!
-Missing character: There is no ú in font cmr10!
-Missing character: There is no ú in font cmr10!
-Missing character: There is no í in font cmr10!
 No file informe2.bbl.
 [2 <./figure_2.png> <./figure_3.png>] (./informe2.aux)
 
@@ -397,13 +331,13 @@ LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 5115 strings out of 493089
- 67739 string characters out of 6134842
- 153831 words of memory out of 5000000
- 8537 multiletter control sequences out of 15000+600000
+ 5120 strings out of 493089
+ 67780 string characters out of 6134842
+ 154831 words of memory out of 5000000
+ 8542 multiletter control sequences out of 15000+600000
  10045 words of font info for 39 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 38i,6n,35p,851b,384s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 38i,6n,35p,879b,384s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 ></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
 </usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb><
@@ -416,7 +350,7 @@ exlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/te
 xlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texl
 ive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texli
 ve/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmti9.pfb>
-Output written on informe2.pdf (2 pages, 310898 bytes).
+Output written on informe2.pdf (2 pages, 311519 bytes).
 PDF statistics:
  66 PDF objects out of 1000 (max. 8388607)
  43 compressed objects within 1 object stream
