@@ -2,6 +2,15 @@ import numpy as np
 from scipy.optimize import bisect
 import matplotlib.pyplot as plt
 
+'''Este script modela el rebote de una particula de masa m
+en presencia de gravedad sobre una superficie que oscila
+sinusoidalmente. Grafica n(rebotes) vs vn'(velocidad luego
+del n-esimo rebote) para 2 frecuencias distintas para poder
+estimar el n en que el sistema se estabiliza. Finalmente
+se grafica n(rebotes) vs vn(velocidad luego
+del n-esimo rebote) para frecuencias entre 1.66 y 1.776 para
+n's en que se asegura que la situacion ya es estable.
+'''
 #condiciones iniciales
 yo=0
 vo=2
@@ -57,7 +66,7 @@ plt.ylabel('$v_n$', fontsize=25)
 plt.xlabel('cantidad de rebotes')
 plt.plot(n,vn,label='$\omega_1=1.66$',color='g')
 plt.legend()
-plt.title('$N_{relax}$ para $w_1=1.66, w_2=1.685, w_3=1.7$', fontsize=18)
+plt.title('$N_{relax}$ para $\omega_1=1.66, \omega_2=1.685, \omega_3=1.7$', fontsize=18)
 
 w=1.685
 (tn,yn,vn)=n_choques(0,yo,vo,10)
@@ -82,9 +91,7 @@ plt.show()
 plt.savefig('figura1.png')
 
 
-
-
-
+#segunda figura
 
 plt.figure(2)
 plt.clf()
