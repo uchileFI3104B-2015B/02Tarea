@@ -61,7 +61,7 @@ def N(Yn,Vn,w,tn):
 m=1
 A=1
 w=1.7
-n=0.6
+n=0.15
 y0=0
 v0=2
 g=1
@@ -77,10 +77,17 @@ def Nchoque(w, c):
         V.append(Ni[1])
         Y.append(Ni[0])
         i+=1
-        print Ni
     return V
-Speed=Nchoque(1, 30)
+Speed=Nchoque(1.66, 100)
+Speed1=Nchoque(1.68, 100)
+Speed2=Nchoque(1.7, 100)
 
-tiempo= np.linspace(0,30,31)
-plt.plot(tiempo, Speed)
+choque= np.linspace(0,100,101)
+plt.plot(choque, Speed, label='w=1.66')
+plt.plot(choque, Speed1, label='w=1.68')
+plt.plot(choque, Speed2, label='w=1.7')
+plt.ylabel('Velocidades')
+plt.xlabel('Numero de Choques')
+plt.legend()
+
 plt.show()
