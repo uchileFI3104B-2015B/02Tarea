@@ -1,0 +1,84 @@
+\documentclass[prl,showpacs, twocolumn]{revtex4-1}
+\usepackage{graphicx,amssymb,color}
+\usepackage[dvipsnames]{xcolor}
+%\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+
+
+\begin{document}
+\title{FI3104 Métodos Númericos para la Ciencia e Ingenieria\\ Tarea 2}
+\author{Camila Sandivari}
+\affiliation{Profesor: Valentino Gonzalez \\ Profesor Auxiliar: Felipe Pesce}
+\date{\today}
+
+\begin{abstract}
+El presente reporte busca explicar los métodos númericos utilizados, y los fundamentos de su uso, para encontrar el comportamiento y evolución de un sistema formado por una masa que rebota sobre un suelo que oscila sinusoidalmente con amplitud $A$ y frecuencia $w$. Además se revisa si la resolución es robusta en el sentido de que variando parámetros del sistema siga caracterizando el movimiento.
+\end{abstract}
+\maketitle
+
+\paragraph{Procedimiento}
+\subparagraph{Parte 1}
+Primero se caracteriza el movimiento de las componentes del sistema (masa, suelo) según las ecuaciones (1) para el la posición y velocidad vertical del suelo y (2) para la posición y velocidad vertical de la masa
+\begin{equation}
+y1=A sin(w (t + fase))
+v1= A w cos(w (t + fase))
+\end{equation}
+\begin{equation}
+y2= -(0.5 g t^2))+ y0 + v0 t
+v2=v0-g t
+\end{equation}
+ Se establece la resta de ambas como una función ("intercsect") que define su intersección y se encuentra el valor del tiempo en que esta función será $0$, usando el método numérico de $bisect$ que recibe esta función intersección y dos valores referenciales como límites para buscar dentro de ellos, en el eje x, el valor para el cuál esta función es un 0. Estos valores referenciales se encuentran al evaluar el valor máximo de la curva ( función "tmax") y el valor mínimo en que ya se cruzó, osea es menos que la amplitud de la oscilación (función "tt"), y encontrar los tiempos en que esto sucede para buscar entre ambos instantes.
+ 
+ Luego se establece una función ("enesimo") para calcular un cero a partir de las condiciones iniciales y a partir de este determinar las nuevas condiciones iniciales para un nuevo problema de las mismas características, para esto se entiende que siendo $y_n $y $v_n$ las condiciones nuevas y $t*$ el tiempo de intersección:
+ 
+ \begin{equation}
+y_n=y2(t*)
+\end{equation}
+\begin{equation}
+v_n(t^*) = (1+\eta)v_s(t^*) - \eta v_p(t^*)
+\end{equation}
+
+\subparagraph{Parte 2 y 3}
+Teniendo el registro de los tiempos de intersección, oséa los botes, y las condiciones iniciales para velocidad y tiempo, solo hay que contar la cantidad de botes y graficar las velocidades con que sale la masa.  Variando w se pueden observar las distintas curvas de relajo.
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\paragraph{Resultados}
+\subparagraph{Parte 1}
+
+Haciendo un ciclo ("for") que recorre por el tiempo se encuentra a partir de una condición inicial, los tiempos de los n botes y condiciones iniciales siguientes, guardado en las variables "tiempos", "bot", "vel", hay que tener en cuenta que los tiempos registrados son desde el tiempo cero cada vez y hay que sincronizar el movimiento del suelo con el tiempo real (no el que comienza desde 0), para esto se agrega una fase temporal al seno en su definición que va cambiando cíclicamente).
+Se observa la primera intersección encontrada, en la figura 1
+
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[width=8cm]{figure_1.png}
+\caption{primera intersección, eje x tiempo , eje y posición y (vertical)}
+\label{default}
+\end{center}
+\end{figure}
+
+\subparagraph{parte 2 y 3}
+
+Para $w= 1.66$ se estabiliza en un Nrelax estimado en 35 botes según figura 2. Para $w$ entre $1.66$ y $1.70$ los N no son comparables, según figura 3. De hecho se puede observar que algunas se estabilizan en dos velocidades otras decaen a una sola.
+
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[width=8cm]{figure_2.png}
+\caption{primera intersección, eje x número de botes , eje y velocidad masa}
+\label{default}
+\end{center}
+\end{figure}
+
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[width=8cm]{figure_3.png}
+\caption{primera intersección, eje x número de botes , eje y velocidad masa}
+\label{default}
+\end{center}
+\end{figure}
+\newpage
+\paragraph{Conclusiones}
+Bisect es un método robusto para encontrar los ceros de una función, aplicando esto se pudo encontrar la dinámica de un sistema de dos cuerpos interactuando y se pudo caracterizar bastante bien su comportamiento en función de los distintos parámetros controlables, como w. Se pueden sacar algunas conclusiones como que dependiendo de la frecuencia de oscilación del suelo w se van a ver distintas formas de relajo del sistema, entre 1.66 y 1.70 se encuentran los valores críticos, pues pasa de relajarse a una sola velocidad fija a un régimen de "doble periodo", relajándose en dos velocidades fijas. A pesar de no realizar la parte 4, se esperaría un punto de bifurcación en que para los primeros w se vea un único valor constante de velocidad y en algún w crítico se comiencen a ver dos valores para la velocidad.
+
+\end{document}
