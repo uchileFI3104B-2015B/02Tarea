@@ -5,7 +5,7 @@ pelota que describe una trayectoria gracias a la gravedad, es decir, busca los
 choques o rebotes de la particula en este suelo. Para esto se define una funcion
 que resta ambas ecuaciones de movimiento y se buscan los ceros de esta funcion
 con el comando "brentq". Todo este procedimiento se repite tantas veces,
-definiendo el numero de choques que queramos. 
+definiendo el numero de choques que queramos.
 
 '''
 
@@ -66,7 +66,7 @@ def ys_menos_yp(t,y,v,td):
 
 #Graficar los saltos y las raices
 plt.clf()
-tiempo=np.linspace(0,20,100)
+tiempo=np.linspace(0,50,200)
 plt.plot(tiempo, y_s(tiempo,tcero), label='suelo',color='r')
 plt.plot(tiempo, y_p(tiempo, y0, v0))
 
@@ -83,7 +83,7 @@ for i in range(choques):
     print raiz
 
 
-    t_values=np.linspace(0, raices,100)
+    t_values=np.linspace(0,raices,200)
     plt.plot(t_values+raices, y_p(tiempo,y0,v0) , color='b')
     plt.axvline(raices,color='y')
 
@@ -104,7 +104,7 @@ for i in range(choques):
     #Actualizar valores del intervalo
     a=0.1
     b= (v0 + (((v0**2)+2*(1+y0))**0.5) )
-    tcero=raiz
+    tcero+=raiz
 
     #Agregar valores a vectores
     tiempos=np.append(tiempos,raices)
