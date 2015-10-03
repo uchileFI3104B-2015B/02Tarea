@@ -11,11 +11,13 @@ import matplotlib.pyplot as plt
 g = -1  # Aceleracion de gravedad
 eta = 0.15  # Coeficiente inelasticidad
 A = 1	# Amplitud movimiento sinusoidal suelo
-w = 1.77	# Frecuencia de osciliacion suelo
+w = 1.66	# Frecuencia de osciliacion suelo
 desfase = 0	# Desfase osciliacion suelo
 t_ini = 0   # Tiempo de inicio simulacion
 delta_t = 0.01  # Resolucion temporal
-t_fin = 400 # Tiempo final simulacion
+delta_w = 0.003
+w_vec = arange(1.66 , 1.79 , delta_w )
+t_fin = 50000 # Tiempo final simulacion
 
 """ Vectores de la simulacion """
 
@@ -28,6 +30,9 @@ pos_particula = zeros(len(t))
 vel_particula = zeros(len(t))
 
 velocidades_rebote = []
+
+velocidades_rebote_w = []
+
 
 def calcular_suelo( A , w , desfase , t ):
 
@@ -54,13 +59,14 @@ def calcular_choque( index ):
     """ Calcula los pasos a tomar para un choque ocurrido en index+1
     index es el valor del indice de t donde la particula cruza bajo el suelo """
 
-    global t, eta, velocidades_rebote
+    global t, eta
 
     y_0 = pos_suelo[index]
     v_0 = fis.choque_inelastico_pared( vel_particula[index] , vel_suelo[index] , eta )
     t_0 = t[index]
-    velocidades_rebote.append(v_0)
     calcular_particula(t_0 , y_0, v_0 , g, index)
+
+    return v_0
 # END calcular_choque
 
 """ END SETUP -----------------------------------------------------------------"""
@@ -82,55 +88,58 @@ calcular_particula( t[0] ,y_0 , v_0 , g , 0 )
 # Correccion de funcion de movimiento de particula
 pos_dif = pos_particula - pos_suelo
 
+counter = -50 # 2* Nrelax para w = 1.66
+j = 0
+
 for i in range( len(t) - 1 ):
 
     # en i+1 aparece bajo el suelo
     if pos_dif[i+1] < 0:
 
-        calcular_choque( i )
+        counter+=1
+
+        vp = calcular_choque( i )
         pos_dif = pos_particula - pos_suelo
 
+        if counter >= 1:
+            velocidades_rebote.append(vp)
+
+        if counter == 50:
+            velocidades_rebote_w.append(velocidades_rebote)
+            j+=1
+            counter = 0
+            velocidades_rebote = []
+            if j >= len(w_vec):
+                #print(len(w_vec))
+                break
+            w = w_vec[j]
 
 
 
-""" Grafico Trayectoria """
-plt.figure(1)
-plt.plot( t, pos_suelo , '-', label='Posicion suelo')
-plt.plot( t , pos_particula , '-', label = 'Posicion particula')
-
-string_x = "Tiempo [s]"
-string_y = "Posicion vertical [m]"
-string_title = "Trayectoria de particula con bote inelastico \n w = " + str(w) + ", n = " + str(eta)
+print len(velocidades_rebote_w)
+print len(w_vec)
 
 
 
-plt.xlabel(string_x)
-plt.ylabel(string_y)
-plt.title(string_title)
-#plt.xlim([0 , 3])	# Se acota espectro para mostrar mas detalle
-plt.grid(True)
-plt.legend()
-plt.savefig("trayectoria.png")
-plt.show()
+for n in range( len(w_vec) ):
+
+    w_buffer = zeros( len(velocidades_rebote_w[n]) ) + w_vec[n]
+
+    plt.plot( w_buffer , velocidades_rebote_w[n] , 'o')
 
 
-""" Velocidades rebote """
-plt.figure(2)
-plt.plot( velocidades_rebote , 'o',  label='Velocidad bote n')
-
-
-string_x = "Numero de rebote"
+string_x = "Frecuencia angular del suelo [rad/s]"
 string_y = "Velocidad de rebote [m/s]"
-string_title = "Velocidad de particula tras cada bote \n w = " + str(w) + ", n = " + str(eta)
-
-print(velocidades_rebote)
+string_title = "Velocidades de bote vs w en estado relajado \n w min = " + str(w_vec[0]) + ", w max = " + str(w_vec[-1]) + ", delta w = " + str( delta_w )
 
 plt.xlabel(string_x)
 plt.ylabel(string_y)
-plt.ylim([0 , 3])	# Se acota espectro para mostrar mas detalle
+
+plt.xlim([ ( w_vec[0] - delta_w ) , ( w_vec[-1] + delta_w ) ])
+#plt.ylim([ , 3])	# Se acota espectro para mostrar mas detalle
 plt.title(string_title)
 #pltxlim([0 , 3])	# Se acota espectro para mostrar mas detalle
 plt.grid(True)
 plt.legend()
-plt.savefig("n_relax_w-177.png")
+plt.savefig("v_bote_vs_w.png")
 plt.show()
